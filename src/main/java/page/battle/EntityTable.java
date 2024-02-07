@@ -13,11 +13,20 @@ import page.support.SortTable;
 import page.support.UnitTCR;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 class EntityTable extends SortTable<Entity> {
 
 	private static final long serialVersionUID = 1L;
-	private static final DecimalFormat df = new DecimalFormat("#.##");
+	private static final DecimalFormat df;
+
+	static {
+		NumberFormat nf = NumberFormat.getInstance(Locale.US);
+
+		df = (DecimalFormat) nf;
+		df.applyPattern("#.##");
+	}
 
 	private final boolean statistics;
 
