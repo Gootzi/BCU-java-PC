@@ -300,7 +300,7 @@ public class MainBCU {
 		}
 	}
 
-	public static final int ver = 50219;
+	public static final int ver = 50220;
 	public static final boolean isBeta = false;
 	private static final DecimalFormat df = new DecimalFormat("#.##");
 
@@ -314,7 +314,7 @@ public class MainBCU {
 	public static ImageBuilder<BufferedImage> builder;
 	public static boolean announce0510 = false;
 	public static int searchTolerance = 4;
-	public static AutoSaveTimer ast;
+	private static AutoSaveTimer ast;
 
 	public static void restartAutoSaveTimer() {
 		if (ast != null)
