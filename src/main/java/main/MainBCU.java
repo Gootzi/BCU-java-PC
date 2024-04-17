@@ -314,6 +314,7 @@ public class MainBCU {
 	public static ImageBuilder<BufferedImage> builder;
 	public static boolean announce0510 = false;
 	public static int searchTolerance = 4;
+	public static int modelShift = 0;
 	public static AutoSaveTimer ast;
 
 	public static void restartAutoSaveTimer() {

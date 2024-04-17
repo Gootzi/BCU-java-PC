@@ -22,6 +22,10 @@ import java.util.Arrays;
 
 public class MaModelEditPage extends Page implements AbEditPage {
 
+    public enum DragType {
+        CAMERA, PART, ROTATE,
+    }
+
     private static final long serialVersionUID = 1L;
 
     private static final float res = 0.95f;
