@@ -157,6 +157,12 @@ public class UtilPC {
 		return new ImageIcon(img);
 	}
 
+	public static Dimension size(int a, int v) {
+		int x = MainFrame.F.getRootPane().getWidth();
+		int y = MainFrame.F.getRootPane().getHeight() - MenuBarHandler.getBar().getHeight();
+		return new Dimension(a * x / 2300, v * y / 1300);
+	}
+
 	public static String[] lvText(Form f, Level lv) {
 		PCoin pc = f.du.getPCoin();
 
