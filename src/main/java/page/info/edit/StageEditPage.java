@@ -15,7 +15,7 @@ import page.JTF;
 import page.Page;
 import page.battle.BattleSetupPage;
 import page.battle.StRecdPage;
-import page.info.filter.EnemyFindPage;
+import page.info.filter.AbEnemyFindPage;
 import page.support.AnimLCR;
 import page.support.RLFIM;
 
@@ -74,7 +74,7 @@ public class StageEditPage extends Page {
 	private final MapColc mc;
 	private final String pack;
 
-	private final EnemyFindPage efp;
+	private final AbEnemyFindPage efp;
 
 	private boolean changing = false;
 	private Stage stage;
@@ -88,7 +88,7 @@ public class StageEditPage extends Page {
 		info = new HeadEditTable(this, pac);
 		jlsm.setListData(mc, mc.maps);
 		jle.setListData(UserProfile.getAll(pack, Enemy.class).toArray(new Enemy[0]));
-		efp = new EnemyFindPage(getThis(), pac.desc.id, pac.desc.dependency.toArray(new String[0]));
+		efp = new AbEnemyFindPage(getThis(), pac.desc.id, pac.desc.dependency.toArray(new String[0]));
 		ini();
 	}
 
@@ -99,7 +99,7 @@ public class StageEditPage extends Page {
 		if (jt.findIndex == -1 || o == null || !Opts.conf("Are you sure you want to set the enemy to " + o + "?"))
 			jt.findIndex = -1;
 		else
-			jt.updateAbEnemy((Enemy) o);
+			jt.updateAbEnemy((AbEnemy) o);
 
 		jlst.revalidate();
 		jlst.repaint();

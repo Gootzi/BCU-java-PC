@@ -70,7 +70,7 @@ public class EnemyListTable extends SortTable<Enemy> {
 		if (c == 0)
 			return e0.compareTo(e1);
 		if (c == 8 || c == 11)
-			return Double.compare((double) get(e0, c), (double) get(e1, c));
+			return Float.compare((float) get(e0, c), (float) get(e1, c));
 		int i0 = (int) get(e0, c);
 		int i1 = (int) get(e1, c);
 		return Integer.compare(i0, i1);
