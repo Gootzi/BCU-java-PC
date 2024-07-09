@@ -8,7 +8,6 @@ import common.util.stage.StageMap;
 import common.util.stage.info.CustomStageInfo;
 import common.util.unit.AbEnemy;
 import common.util.unit.EneRand;
-import common.util.unit.Enemy;
 import main.Opts;
 import page.JBTN;
 import page.JTF;
@@ -87,7 +86,6 @@ public class StageEditPage extends Page {
 		jspjt = new JScrollPane(jt);
 		info = new HeadEditTable(this, pac);
 		jlsm.setListData(mc, mc.maps);
-		jle.setListData(UserProfile.getAll(pack, Enemy.class).toArray(new Enemy[0]));
 		efp = new AbEnemyFindPage(getThis(), pac.desc.id, pac.desc.dependency.toArray(new String[0]));
 		ini();
 	}
