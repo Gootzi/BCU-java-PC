@@ -40,6 +40,7 @@ class HeadEditTable extends Page {
 	private final JTF jbgh = new JTF();
 	private final JTF jbg1 = new JTF();
 	private final JTG con = new JTG(MainLocale.INFO, "ht03");
+	private final JTG bgrd = new JTG(MainLocale.INFO, "bossguard");
 	private final JTF[] star = new JTF[4];
 	private final JTF jmax = new JTF();
 	private final JL res = new JL(MainLocale.INFO, "minspawn");
@@ -145,7 +146,8 @@ class HeadEditTable extends Page {
 		set(cas, x, y, w * 4, 100, w, 50);
 		set(jcas, x, y, w * 5, 100, w, 50);
 		set(con, x, y, w * 6, 100, w, 50);
-		set(dojo, x, y, w * 7, 100, w, 50);
+		set(bgrd, x, y, w * 7, 100, w, 50);
+		set(dojo, x, y, w * 7, 150, w, 50);
 
 		set(mus, x, y, 0, 150, w, 50);
 		set(jm0, x, y, w, 150, w, 50);
@@ -180,6 +182,7 @@ class HeadEditTable extends Page {
 		jmax.setText(String.valueOf(st.max));
 		cos.setText(String.valueOf(st.getCont().price + 1));
 		con.setSelected(!st.non_con);
+		bgrd.setSelected(st.bossGuard);
 		dojo.setSelected(st.trail);
 		String str = get(MainLocale.INFO, "star") + ": ";
 		for (int i = 0; i < 4; i++)
@@ -207,6 +210,7 @@ class HeadEditTable extends Page {
 		jcas.setEnabled(b);
 		jmax.setEnabled(b);
 		con.setEnabled(b);
+		bgrd.setEnabled(b);
 		mus.setEnabled(b);
 		jm0.setEnabled(b);
 		jmh.setEnabled(b);
@@ -240,6 +244,11 @@ class HeadEditTable extends Page {
 			setData(sta);
 		});
 
+		bgrd.addActionListener(arg0 -> {
+			sta.bossGuard = bgrd.isSelected();
+			setData(sta);
+		});
+
 		dojo.addActionListener(arg0 -> {
 			sta.trail = dojo.isSelected();
 			if (sta.trail) {
@@ -262,6 +271,7 @@ class HeadEditTable extends Page {
 		add(bg);
 		add(cas);
 		add(con);
+		add(bgrd);
 		add(dojo);
 		add(mus);
 		set(jhea);
