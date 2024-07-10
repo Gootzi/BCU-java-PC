@@ -198,7 +198,7 @@ public class StageViewPage extends StagePage {
 		}
 		StageMap curr = jlsm.getSelectedValue();
 		jlsm.setListData(filtered);
-		jlsm.setSelectedValue(curr, true);
+		jlsm.setSelectedIndex(Math.max(filtered.indexOf(curr), 0));
 	}
 
 	private void confirmSearchST() {
@@ -213,7 +213,7 @@ public class StageViewPage extends StagePage {
 		}
 		Stage curr = jlst.getSelectedValue();
 		jlst.setListData(filtered);
-		jlst.setSelectedValue(curr, true);
+		jlst.setSelectedIndex(Math.max(filtered.indexOf(curr), 0));
 	}
 
 	private void ini() {
