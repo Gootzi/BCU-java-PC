@@ -103,19 +103,20 @@ public class StageViewPage extends StagePage {
 			for (MapColc m : jlmc.getSelectedValuesList())
 				vtsm.addAll(m.maps.getList());
 			confirmSearchSM();
-			jlsm.setSelectedIndex(0);
 		});
 
 		jlsm.addListSelectionListener(arg0 -> {
 			if (arg0.getValueIsAdjusting())
 				return;
-			StageMap sm = jlsm.getSelectedValue();
+			vtst.clear();
+			List<StageMap> maps = jlsm.getSelectedValuesList();
 			cpsm.setEnabled(false);
-			if (sm == null)
+			if (maps == null)
 				return;
 			cpsm.setEnabled(true);
-			jlst.setListData(sm.list.toArray());
-			jlst.setSelectedIndex(0);
+			for (StageMap sm : maps)
+				vtst.addAll(sm.list.getList());
+			confirmSearchST();
 		});
 
 		jlst.addListSelectionListener(arg0 -> {
@@ -159,9 +160,8 @@ public class StageViewPage extends StagePage {
 	}
 
 	private void addListeners2() {
-		smnm.setTypeLnr(x -> {
-			confirmSearchSM();
-		});
+		smnm.setTypeLnr(x -> confirmSearchSM());
+		snam.setTypeLnr(x -> confirmSearchST());
 	}
 
 	private void confirmSearchSM() {
@@ -176,6 +176,20 @@ public class StageViewPage extends StagePage {
 		}
 		jlsm.setListData(filtered);
 		jlsm.setSelectedIndex(0);
+	}
+
+	private void confirmSearchST() {
+		Vector<Stage> filtered = new Vector<>();
+		String text = snam.getText().toLowerCase();
+		int minDiff = MainBCU.searchTolerance;
+		for (Stage st : vtst) {
+			int diff = UtilPC.damerauLevenshteinDistance(st.toString().toLowerCase(), text);
+			minDiff = Math.min(minDiff, diff);
+			if (diff == minDiff)
+				filtered.add(st);
+		}
+		jlst.setListData(filtered);
+		jlst.setSelectedIndex(0);
 	}
 
 	private void ini() {
