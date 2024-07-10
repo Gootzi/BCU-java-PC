@@ -34,7 +34,10 @@ public class StageViewPage extends StagePage {
 	private final JScrollPane jspst = new JScrollPane(jlst);
 
 	private final JBTN cpsm = new JBTN(0, "cpsm");
+	private final JBTN shmc = new JBTN(0, "showmc");
 	private final JBTN cpst = new JBTN(0, "cpst");
+	private final JBTN shsm = new JBTN(0, "showsm");
+
 	private final JBTN dgen = new JBTN(0, "dungeon");
 	private final JBTN recd = new JBTN(0, "replay");
 	private final JBTN info = new JBTN(0, "info");
@@ -65,13 +68,15 @@ public class StageViewPage extends StagePage {
 
 		set(smnm, x, y, 0, 50, 400, 50);
 		set(jspsm, x, y, 0, 100, 400, 1100);
+		set(cpsm, x, y, 0, 1200, 200, 50);
+		set(shmc, x, y, 200, 1200, 200, 50);
 
 		set(jspmc, x, y, 400, 50, 400, 500);
 		set(snam, x, y, 400, 550, 400, 50);
 		set(jspst, x, y, 400, 600, 400, 600);
+		set(cpst, x, y, 400, 1200, 200, 50);
+		set(shsm, x, y, 600, 1200, 200, 50);
 
-		set(cpsm, x, y, 50, 1200, 300, 50);
-		set(cpst, x, y, 450, 1200, 300, 50);
 		set(dgen, x, y, 600, 0, 200, 50);
 		set(strt, x, y, 400, 0, 200, 50);
 		set(recd, x, y, 1850, 350, 200, 50);
@@ -83,6 +88,7 @@ public class StageViewPage extends StagePage {
 	protected void setData(Stage st) {
 		super.setData(st);
 		cpst.setEnabled(st != null);
+		shsm.setEnabled(st != null);
 		recd.setEnabled(st != null);
 	}
 
@@ -111,9 +117,11 @@ public class StageViewPage extends StagePage {
 			vtst.clear();
 			List<StageMap> maps = jlsm.getSelectedValuesList();
 			cpsm.setEnabled(false);
+			shsm.setEnabled(false);
 			if (maps == null)
 				return;
 			cpsm.setEnabled(true);
+			shmc.setEnabled(true);
 			for (StageMap sm : maps)
 				vtst.addAll(sm.list.getList());
 			confirmSearchST();
@@ -124,6 +132,7 @@ public class StageViewPage extends StagePage {
 				return;
 			Stage s = jlst.getSelectedValue();
 			cpst.setEnabled(false);
+			shsm.setEnabled(false);
 			if (s == null)
 				return;
 			setData(s);
@@ -157,6 +166,19 @@ public class StageViewPage extends StagePage {
 
 		srch.setLnr(x -> changePanel(new StageSearchPage(getThis())));
 
+		shmc.setLnr(x -> {
+			StageMap sm = jlsm.getSelectedValue();
+			jlmc.clearSelection();
+			jlmc.setSelectedValue(sm.getCont(), true);
+		});
+
+		shsm.setLnr(x -> {
+			Stage st = jlst.getSelectedValue();
+			jlmc.clearSelection();
+			jlmc.setSelectedValue(st.getCont().getCont(), true);
+			jlsm.setSelectedIndex(vtsm.indexOf(st.getCont()));
+			jlst.setSelectedValue(st, true);
+		});
 	}
 
 	private void addListeners2() {
@@ -174,8 +196,9 @@ public class StageViewPage extends StagePage {
 			if (diff == minDiff)
 				filtered.add(sm);
 		}
+		StageMap curr = jlsm.getSelectedValue();
 		jlsm.setListData(filtered);
-		jlsm.setSelectedIndex(0);
+		jlsm.setSelectedValue(curr, true);
 	}
 
 	private void confirmSearchST() {
@@ -188,8 +211,9 @@ public class StageViewPage extends StagePage {
 			if (diff == minDiff)
 				filtered.add(st);
 		}
+		Stage curr = jlst.getSelectedValue();
 		jlst.setListData(filtered);
-		jlst.setSelectedIndex(0);
+		jlst.setSelectedValue(curr, true);
 	}
 
 	private void ini() {
@@ -204,8 +228,12 @@ public class StageViewPage extends StagePage {
 		add(srch);
 		add(smnm);
 		add(snam);
+		add(shmc);
+		add(shsm);
 		cpsm.setEnabled(false);
+		shmc.setEnabled(false);
 		cpst.setEnabled(false);
+		shsm.setEnabled(false);
 		recd.setEnabled(false);
 		addListeners();
 		addListeners2();
