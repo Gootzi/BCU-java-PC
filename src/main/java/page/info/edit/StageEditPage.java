@@ -11,6 +11,7 @@ import common.util.unit.EneRand;
 import main.Opts;
 import page.JBTN;
 import page.JTF;
+import page.MainLocale;
 import page.Page;
 import page.battle.BattleSetupPage;
 import page.battle.StRecdPage;
@@ -33,6 +34,7 @@ public class StageEditPage extends Page {
 	public static void redefine() {
 		StageEditTable.redefine();
 		LimitTable.redefine();
+		StageLimitTable.redefine();
 		SCGroupEditTable.redefine();
 	}
 
@@ -68,7 +70,12 @@ public class StageEditPage extends Page {
 	private final JList<AbEnemy> jle = new JList<>();
 	private final JScrollPane jspe = new JScrollPane(jle);
 
-	private final HeadEditTable info;
+	private final JBTN data = new JBTN(MainLocale.PAGE, "head0");
+	private int headEdit = 0;
+
+	private final HeadEditTable hinf;
+	private final LimitTable linf;
+	private final StageLimitTable sinf;
 
 	private final MapColc mc;
 	private final String pack;
@@ -84,7 +91,9 @@ public class StageEditPage extends Page {
 		pack = pac.desc.id;
 		jt = new StageEditTable(this, pac);
 		jspjt = new JScrollPane(jt);
-		info = new HeadEditTable(this, pac);
+		hinf = new HeadEditTable(this, pac);
+		linf = new LimitTable(p, this, pac);
+		sinf = new StageLimitTable(this, pac);
 		jlsm.setListData(mc, mc.maps);
 		efp = new AbEnemyFindPage(getThis(), pac.desc.id, pac.desc.dependency.toArray(new String[0]));
 		ini();
@@ -116,7 +125,8 @@ public class StageEditPage extends Page {
 
 	@Override
 	protected void renew() {
-		info.renew();
+		hinf.renew();
+		linf.renew();
 
 		Vector<AbEnemy> v = new Vector<>();
 
@@ -147,13 +157,27 @@ public class StageEditPage extends Page {
 		setBounds(0, 0, x, y);
 
 		set(back, x, y, 0, 0, 200, 50);
-		set(info, x, y, 900, 50, 1400, 300);
 		set(addl, x, y, 900, 400, 200, 50);
 		set(reml, x, y, 1100, 400, 200, 50);
 		set(elim, x, y, 1600, 400, 200, 50);
 		set(recd, x, y, 1850, 400, 200, 50);
 		set(advs, x, y, 2100, 400, 200, 50);
 		set(jspjt, x, y, 900, 450, 1400, 850);
+		set(data, x, y, 2100, 0, 200, 50);
+
+		if (headEdit == 0) {
+			set(hinf, x, y, 900, 50, 1400, 200);
+			set(linf, x, y, 900, 50, 0, 0);
+			set(sinf, x, y, 900, 50, 0, 0);
+		} else if (headEdit == 1) {
+			set(hinf, x, y, 900, 50, 0, 0);
+			set(linf, x, y, 900, 50, 1400, 350);
+			set(sinf, x, y, 900, 50, 0, 0);
+		} else if (headEdit == 2) {
+			set(hinf, x, y, 900, 50, 0, 0);
+			set(linf, x, y, 900, 50, 0, 0);
+			set(sinf, x, y, 900, 50, 1400, 350);
+		}
 
 		set(jspsm, x, y, 0, 50, 300, 800);
 		set(cpsm, x, y, 0, 850, 300, 50);
@@ -324,6 +348,11 @@ public class StageEditPage extends Page {
 
 		rems.setLnr(jlst::deleteItem);
 
+		data.setLnr(x -> {
+			headEdit = (headEdit + 1) % 3;
+			data.setText(MainLocale.PAGE, "head" + headEdit);
+			needResize = true;
+		});
 	}
 
 	private void checkPtsm() {
@@ -362,7 +391,9 @@ public class StageEditPage extends Page {
 		add(adds);
 		add(rems);
 		add(jspjt);
-		add(info);
+		add(hinf);
+		add(linf);
+		add(sinf);
 		add(strt);
 		add(jspsm);
 		add(jspst);
@@ -380,6 +411,7 @@ public class StageEditPage extends Page {
 		add(recd);
 		add(advs);
 		add(elim);
+		add(data);
 		setAA(null);
 		setBA(null);
 		jle.setCellRenderer(new AnimLCR());
@@ -482,7 +514,9 @@ public class StageEditPage extends Page {
 
 	private void setData(Stage st) {
 		stage = st;
-		info.setData(st);
+		hinf.setData(st);
+		linf.setLimit(st != null ? st.lim : null);
+		sinf.setData(st);
 		jt.setData(st);
 		strt.setEnabled(st != null);
 		recd.setEnabled(st != null);

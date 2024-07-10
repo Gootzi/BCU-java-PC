@@ -175,8 +175,9 @@ public class StageViewPage extends StagePage {
 		shsm.setLnr(x -> {
 			Stage st = jlst.getSelectedValue();
 			jlmc.clearSelection();
+			jlsm.clearSelection();
 			jlmc.setSelectedValue(st.getCont().getCont(), true);
-			jlsm.setSelectedIndex(vtsm.indexOf(st.getCont()));
+			jlsm.setSelectedValue(st.getCont(), true);
 			jlst.setSelectedValue(st, true);
 		});
 	}
