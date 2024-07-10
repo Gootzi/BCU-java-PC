@@ -751,6 +751,14 @@ public interface BattleBox {
 
 					((ECastle) sb.ebase).smoke.draw(gra, setP(sx, sy), psiz * 1.2f);
 				}
+				if(sb.temp_inten == 0 && ((ECastle) sb.ebase).guard != null && !((ECastle) sb.ebase).guard.done()) { // TODO (visuals): match exact visuals in-game
+					gra.setTransform(at);
+
+					float sx = getX(sb.ebase.pos + 25f);
+					float sy = midh - (road_h - 3 * DEP + 50f) * bf.sb.siz;
+
+					((ECastle) sb.ebase).guard.draw(gra, setP(sx, sy), psiz * 1.2f);
+				}
 			}
 
 			if(sb.ubase instanceof ECastle) {
