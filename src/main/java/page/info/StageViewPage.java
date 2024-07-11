@@ -139,19 +139,20 @@ public class StageViewPage extends StagePage {
 		});
 
 		cpsm.addActionListener(arg0 -> {
-			StageMap sm = jlsm.getSelectedValue();
-			if (sm == null)
+			List<StageMap> lsm = jlsm.getSelectedValuesList();
+			if (lsm.isEmpty())
 				return;
 			MapColc mc = Stage.CLIPMC;
-			StageMap copy = sm.copy(mc);
-			mc.maps.add(copy);
+			for (StageMap sm : lsm)
+				mc.maps.add(sm.copy(mc));
 		});
 
 		cpst.addActionListener(arg0 -> {
-			Stage stage = jlst.getSelectedValue();
-			if (stage == null)
+			List<Stage> stages = jlst.getSelectedValuesList();
+			if (stages.isEmpty())
 				return;
-			Stage.CLIPSM.add(stage.copy(Stage.CLIPSM));
+			for (Stage st : stages)
+				Stage.CLIPSM.add(st.copy(Stage.CLIPSM));
 		});
 
 		dgen.setLnr(x -> {
