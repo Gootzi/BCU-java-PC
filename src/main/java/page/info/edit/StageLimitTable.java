@@ -10,6 +10,8 @@ import page.MainLocale;
 import page.Page;
 
 import javax.swing.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class StageLimitTable extends Page {
 
@@ -52,9 +54,9 @@ public class StageLimitTable extends Page {
 
     private void ini() {
         add(bank);
-        add(jban);
+        reg(jban);
         add(cres);
-        add(jcre);
+        reg(jcre);
         addListeners();
     }
 
@@ -62,14 +64,33 @@ public class StageLimitTable extends Page {
         if (st == null) {
             return;
         }
-        stli =  st.getCont().stageLimit == null ? st.getCont().stageLimit = new StageLimit() : st.getCont().stageLimit;
+        stli = st.getCont().stageLimit == null ? st.getCont().stageLimit = new StageLimit() : st.getCont().stageLimit;
         jban.setText(stli.maxMoney + "");
         jcre.setText(stli.globalCooldown + "");
     }
 
+    private void reg(JTF jtf) {
+        add(jtf);
+
+        jtf.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (getFront().isAdj())
+                    return;
+                input(jtf, jtf.getText());
+                getFront().callBack(stli);
+            }
+        });
+    }
+
+    private void input(JTF jtf, String text) {
+        if (jtf == jban) {
+            stli.maxMoney = Math.max(CommonStatic.parseIntN(text), 0);
+        } else if (jtf == jcre)
+            stli.globalCooldown = Math.max(CommonStatic.parseIntN(text), 0);
+    }
+
     private void addListeners() {
-        jban.setLnr(x -> stli.maxMoney = Math.min(CommonStatic.parseIntN(jban.getText()), 0));
-        jcre.setLnr(x -> stli.globalCooldown = Math.min(CommonStatic.parseIntN(jcre.getText()), 0));
     }
 
     @Override

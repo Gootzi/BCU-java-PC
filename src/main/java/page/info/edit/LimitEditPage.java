@@ -29,7 +29,7 @@ public class LimitEditPage extends Page {
 		super(p);
 
 		st = stage;
-		lt = new LimitTable(this, this, ((PackMapColc) stage.getCont().getCont()).pack);
+		lt = new LimitTable(this, ((PackMapColc) stage.getCont().getCont()).pack);
 
 		ini();
 	}

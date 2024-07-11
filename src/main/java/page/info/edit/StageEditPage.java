@@ -92,7 +92,7 @@ public class StageEditPage extends Page {
 		jt = new StageEditTable(this, pac);
 		jspjt = new JScrollPane(jt);
 		hinf = new HeadEditTable(this, pac);
-		linf = new LimitTable(p, this, pac);
+		linf = new LimitTable(this, pac);
 		sinf = new StageLimitTable(this, pac);
 		jlsm.setListData(mc, mc.maps);
 		efp = new AbEnemyFindPage(getThis(), pac.desc.id, pac.desc.dependency.toArray(new String[0]));
@@ -110,6 +110,8 @@ public class StageEditPage extends Page {
 
 		jlst.revalidate();
 		jlst.repaint();
+
+		setData(stage);
 	}
 
 	@Override

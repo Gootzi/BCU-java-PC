@@ -39,17 +39,14 @@ public class LimitTable extends Page {
 	private final JTG[] brars = new JTG[6];
 
 	private final UserPack pac;
-	private final Page par, main;
 
 	private CharaGroupPage cgp;
 	private LvRestrictPage lrp;
 
 	private Limit lim;
 
-	protected LimitTable(Page p0, Page p1, UserPack p) {
-		super(null);
-		main = p0;
-		par = p1;
+	protected LimitTable(Page p0, UserPack p) {
+		super(p0);
 		pac = p;
 		ini();
 	}
@@ -146,20 +143,20 @@ public class LimitTable extends Page {
 		for (int i = 0; i < brars.length; i++) {
 			int I = i;
 			brars[i].addActionListener(e -> {
-				if (par.isAdj())
+				if (getFront().isAdj())
 					return;
 				lim.rare ^= 1 << I;
-				par.callBack(lim);
+				getFront().callBack(lim);
 			});
 		}
 
 		cgb.addActionListener(arg0 -> {
-			cgp = new CharaGroupPage(main, pac, false);
+			cgp = new CharaGroupPage(getFront(), pac, false);
 			changePanel(cgp);
 		});
 
 		lrb.addActionListener(arg0 -> {
-			lrp = new LvRestrictPage(main, pac, false);
+			lrp = new LvRestrictPage(getFront(), pac, false);
 			changePanel(lrp);
 		});
 	}
@@ -215,10 +212,10 @@ public class LimitTable extends Page {
 
 			@Override
 			public void focusLost(FocusEvent fe) {
-				if (par.isAdj())
+				if (getFront().isAdj())
 					return;
 				input(jtf, jtf.getText());
-				par.callBack(lim);
+				getFront().callBack(lim);
 			}
 		});
 
