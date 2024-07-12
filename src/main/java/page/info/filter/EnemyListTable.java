@@ -95,7 +95,7 @@ public class EnemyListTable extends SortTable<Enemy> {
 		else if (c == 7)
 			return e.de.getSpeed();
 		else if (c == 8)
-			return Math.floor(e.de.getDrop() * b.t().getDropMulti()) / 100;
+			return Math.floor(e.de.getDrop() * b.t().getDropMulti(false)) / 100;
 		else if (c == 9)
 			return e.de.rawAtkData()[0][1];
 		else if (c == 10)
