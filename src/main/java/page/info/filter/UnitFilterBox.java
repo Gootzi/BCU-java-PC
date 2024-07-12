@@ -8,7 +8,6 @@ import common.pack.UserProfile;
 import common.util.lang.MultiLangCont;
 import common.util.lang.ProcLang;
 import common.util.stage.Limit;
-import common.util.unit.Enemy;
 import common.util.unit.Form;
 import common.util.unit.Trait;
 import common.util.unit.Unit;
@@ -76,7 +75,7 @@ public abstract class UnitFilterBox extends Page {
 
 	protected abstract List<Form> filterType();
 
-	protected List<Form> filterNameOld() {
+	protected List<Form> filterName() {
 		int minDiff = MainBCU.searchTolerance;
 		List<Form> forms = new ArrayList<>();
 		for (Form f : form) {
@@ -91,13 +90,13 @@ public abstract class UnitFilterBox extends Page {
 		return forms;
 	}
 
-	protected List<Form> filterName() {
+	protected List<Form> filterNameDynamic() {
 
 		if(name.isEmpty())
 			return form;
 
 		int nlen = name.length();
-		int toll = MainBCU.NewSearchTolerance[Math.min(MainBCU.NewSearchTolerance.length-1, nlen)];
+		int toll = MainBCU.dynamicTolerance[Math.min(MainBCU.dynamicTolerance.length-1, nlen)];
 
 		String lowName = name.toLowerCase();
 		String headFname;
@@ -136,7 +135,9 @@ public abstract class UnitFilterBox extends Page {
 	 	1 - only filter by name
 	 */
 	protected void confirm(int type) {
-		getFront().callBack(type == 0 ? filterType() : type == 1 ? filterName() : null);
+		getFront().callBack(type == 0 ? filterType()
+				: type == 1 ? (MainBCU.useDynamic ? filterNameDynamic() : filterName())
+				: null);
 	}
 }
 
@@ -249,7 +250,7 @@ class UFBButton extends UnitFilterBox {
 					if (b0 & b1 & b2 & b3 & b4)
 						form.add(f);
 				}
-		return filterName();
+		return MainBCU.useDynamic ? filterNameDynamic() : filterName();
 	}
 
 	private void ini() {
@@ -415,7 +416,7 @@ class UFBList extends UnitFilterBox {
 				}
 		}
 
-		return filterName();
+		return MainBCU.useDynamic ? filterNameDynamic() : filterName();
 	}
 
 	@Override

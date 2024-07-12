@@ -314,7 +314,8 @@ public class MainBCU {
 	public static ImageBuilder<BufferedImage> builder;
 	public static boolean announce0510 = false;
 	public static int searchTolerance = 4;
-	public static int[] NewSearchTolerance = {0,0,0,0,1,1,1,2,2,2,3};
+	public static int[] dynamicTolerance = {0,0,0,0,1,1,1,2,2,2,3};
+	public static boolean useDynamic = false;
 	private static AutoSaveTimer ast;
 
 	public static void restartAutoSaveTimer() {

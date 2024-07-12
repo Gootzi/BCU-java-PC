@@ -31,7 +31,10 @@ import page.view.ViewBox;
 import utilpc.Interpret;
 
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayDeque;
@@ -112,6 +115,9 @@ public class BCUReader extends DataIO {
 				}
 				if (jo.has("tolerance")) {
 					MainBCU.searchTolerance = jo.get("tolerance").getAsInt();
+				}
+				if (jo.has("usedynamic")) {
+					MainBCU.useDynamic = jo.get("usedynamic").getAsBoolean();
 				}
 				String[] exp = JsonDecoder.decode(jo.get("export_paths"), String[].class);
 				String[] imp = JsonDecoder.decode(jo.get("import_paths"), String[].class);

@@ -65,7 +65,7 @@ public abstract class EnemyFilterBox extends Page {
 
 	protected abstract List<Enemy> filterType();
 
-	protected List<Enemy> filterNameOld() {
+	protected List<Enemy> filterName() {
 		int minDiff = MainBCU.searchTolerance;
 		List<Enemy> enemf = new ArrayList<>();
 		for (Enemy e : enem) {
@@ -80,13 +80,13 @@ public abstract class EnemyFilterBox extends Page {
 		return enemf;
 	}
 
-	protected List<Enemy> filterName() {
+	protected List<Enemy> filterNameDynamic() {
 
 		if(name.isEmpty())
 			return enem;
 
 		int nlen = name.length();
-		int toll = MainBCU.NewSearchTolerance[Math.min(MainBCU.NewSearchTolerance.length-1, nlen)];
+		int toll = MainBCU.dynamicTolerance[Math.min(MainBCU.dynamicTolerance.length-1, nlen)];
 
 		String lowName = name.toLowerCase();
 		String headFname;
@@ -123,7 +123,9 @@ public abstract class EnemyFilterBox extends Page {
 	 1 - only update name filter
 	 */
 	protected void confirm(int type) {
-		getFront().callBack(type == 0 ? filterType() : type == 1 ? filterName() : null);
+		getFront().callBack(type == 0 ? filterType()
+				: type == 1 ? (MainBCU.useDynamic ? filterNameDynamic() : filterName())
+				: null);
 	}
 
 }
@@ -236,7 +238,7 @@ class EFBButton extends EnemyFilterBox {
 			}
 		}
 
-		return filterName();
+		return MainBCU.useDynamic ? filterNameDynamic() : filterName();
 	}
 
 	private void ini() {
@@ -406,7 +408,7 @@ class EFBList extends EnemyFilterBox {
 			}
 		}
 
-		return filterName();
+		return MainBCU.useDynamic ? filterNameDynamic() : filterName();
 	}
 
 	private void ini() {
