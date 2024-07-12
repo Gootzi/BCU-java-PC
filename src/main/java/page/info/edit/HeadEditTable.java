@@ -308,7 +308,7 @@ class HeadEditTable extends Page {
 		}
 		int val = CommonStatic.parseIntN(str);
 		if (jtf == jhea) {
-			if (val <= 0)
+			if (val <= 0 || val > 100)
 				return;
 			if (!sta.trail)
 				sta.health = val;

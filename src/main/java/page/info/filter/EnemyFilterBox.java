@@ -65,7 +65,7 @@ public abstract class EnemyFilterBox extends Page {
 
 	protected abstract List<Enemy> filterType();
 
-	protected List<Enemy> filterName() {
+	protected List<Enemy> filterNameOld() {
 		int minDiff = MainBCU.searchTolerance;
 		List<Enemy> enemf = new ArrayList<>();
 		for (Enemy e : enem) {
@@ -76,6 +76,44 @@ public abstract class EnemyFilterBox extends Page {
 			minDiff = Math.min(minDiff, diff);
 			if (diff == minDiff)
 				enemf.add(e);
+		}
+		return enemf;
+	}
+
+	protected List<Enemy> filterName() {
+
+		if(name.isEmpty())
+			return enem;
+
+		int nlen = name.length();
+		int toll = MainBCU.NewSearchTolerance[Math.min(MainBCU.NewSearchTolerance.length-1, nlen)];
+
+		String lowName = name.toLowerCase();
+		String headFname;
+
+		List<Enemy> enemf = new ArrayList<>();
+		for (Enemy e : enem) {
+			String fname = MultiLangCont.getStatic().ENAME.getCont(e);
+			if (fname == null)
+				continue;
+			fname = fname.toLowerCase();
+
+			switch (nlen) {
+				case 1:
+					if(fname.startsWith(lowName) || fname.contains(" " + lowName))
+						enemf.add(e);
+					break;
+				case 2:
+				case 3:
+					if(fname.startsWith(lowName) || fname.contains(" " + lowName) || fname.contains(lowName + " ") || fname.endsWith(lowName))
+						enemf.add(e);
+					break;
+				default:
+					headFname = fname.substring(0, Math.min(fname.length(), nlen + toll));
+					if( (fname.charAt(0) == lowName.charAt(0) && (UtilPC.damerauLevenshteinDistance(headFname, lowName) <= 2 * toll)) || fname.contains(lowName))
+						enemf.add(e);
+					break;
+			}
 		}
 		return enemf;
 	}

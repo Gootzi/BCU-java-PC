@@ -8,6 +8,7 @@ import common.pack.UserProfile;
 import common.util.lang.MultiLangCont;
 import common.util.lang.ProcLang;
 import common.util.stage.Limit;
+import common.util.unit.Enemy;
 import common.util.unit.Form;
 import common.util.unit.Trait;
 import common.util.unit.Unit;
@@ -75,7 +76,7 @@ public abstract class UnitFilterBox extends Page {
 
 	protected abstract List<Form> filterType();
 
-	protected List<Form> filterName() {
+	protected List<Form> filterNameOld() {
 		int minDiff = MainBCU.searchTolerance;
 		List<Form> forms = new ArrayList<>();
 		for (Form f : form) {
@@ -86,6 +87,46 @@ public abstract class UnitFilterBox extends Page {
 			minDiff = Math.min(minDiff, diff);
 			if (diff == minDiff)
 				forms.add(f);
+		}
+		return forms;
+	}
+
+	protected List<Form> filterName() {
+
+		if(name.isEmpty())
+			return form;
+
+		int nlen = name.length();
+		int toll = MainBCU.NewSearchTolerance[Math.min(MainBCU.NewSearchTolerance.length-1, nlen)];
+
+		String lowName = name.toLowerCase();
+		String headFname;
+
+		List<Form> forms = new ArrayList<>();
+		for (Form e : form) {
+			String fname = MultiLangCont.getStatic().FNAME.getCont(e);
+			if (fname == null)
+				fname = e.names.toString();
+			if (fname == "")
+				continue;
+			fname = fname.toLowerCase();
+
+			switch (nlen) {
+				case 1:
+					if(fname.startsWith(lowName) || fname.contains(" " + lowName))
+						forms.add(e);
+					break;
+				case 2:
+				case 3:
+					if(fname.startsWith(lowName) || fname.contains(" " + lowName) || fname.contains(lowName + " ") || fname.endsWith(lowName))
+						forms.add(e);
+					break;
+				default:
+					headFname = fname.substring(0, Math.min(fname.length(), nlen + toll));
+					if( (fname.charAt(0) == lowName.charAt(0) && (UtilPC.damerauLevenshteinDistance(headFname, lowName) <= 2 * toll)) || fname.contains(lowName))
+						forms.add(e);
+					break;
+			}
 		}
 		return forms;
 	}
