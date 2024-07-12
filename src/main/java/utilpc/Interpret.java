@@ -1128,7 +1128,7 @@ public class Interpret extends Data {
         return ans.toString();
     }
 
-    public static void readDropData(DefStageInfo data, StringBuilder ans) { // fixme: incorrect rewards for EoC, ItF & EoC/ItF/CotC outbreak
+    public static void readDropData(DefStageInfo data, StringBuilder ans) { // fixme: incorrect ItF drop reward
         if (data.drop == null || data.drop.length == 0) {
             ans.append(Page.get(MainLocale.PAGE, "none"));
             return;
@@ -1154,7 +1154,7 @@ public class Interpret extends Data {
                 continue;
 
             String chance = chances.isEmpty() ? String.valueOf(i + 1) : chances.get(i) + "%";
-            String reward = MultiLangCont.getServerDrop(data.drop[i][1]);
+            String reward = MultiLangCont.getStageDrop(data.drop[i][1]);
 
             if (reward == null || reward.isEmpty())
                 reward = Page.get(MainLocale.INFO, "rewid") + " " + data.drop[i][1];
