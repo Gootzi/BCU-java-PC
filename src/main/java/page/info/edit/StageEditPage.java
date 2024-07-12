@@ -157,29 +157,27 @@ public class StageEditPage extends Page {
 	@Override
 	protected synchronized void resized(int x, int y) {
 		setBounds(0, 0, x, y);
-
 		set(back, x, y, 0, 0, 200, 50);
-		set(addl, x, y, 900, 400, 200, 50);
-		set(reml, x, y, 1100, 400, 200, 50);
-		set(elim, x, y, 1600, 400, 200, 50);
-		set(recd, x, y, 1850, 400, 200, 50);
-		set(advs, x, y, 2100, 400, 200, 50);
-		set(jspjt, x, y, 900, 450, 1400, 850);
-		set(data, x, y, 2100, 0, 200, 50);
+
+		int subY = 300;
 
 		if (headEdit == 0) {
 			set(hinf, x, y, 900, 50, 1400, 200);
-			set(linf, x, y, 900, 50, 0, 0);
+			set(linf, x, y, 900, 250, 1400, 100);
 			set(sinf, x, y, 900, 50, 0, 0);
 		} else if (headEdit == 1) {
-			set(hinf, x, y, 900, 50, 0, 0);
-			set(linf, x, y, 900, 50, 1400, 350);
-			set(sinf, x, y, 900, 50, 0, 0);
-		} else if (headEdit == 2) {
 			set(hinf, x, y, 900, 50, 0, 0);
 			set(linf, x, y, 900, 50, 0, 0);
 			set(sinf, x, y, 900, 50, 1400, 350);
 		}
+
+		set(addl, x, y, 900, subY + 100, 200, 50);
+		set(reml, x, y, 1100, subY + 100, 200, 50);
+		set(elim, x, y, 1600, subY + 100, 200, 50);
+		set(recd, x, y, 1850, subY + 100, 200, 50);
+		set(advs, x, y, 2100, subY + 100, 200, 50);
+		set(jspjt, x, y, 900, subY + 150, 1400, 1200 - subY);
+		set(data, x, y, 2100, 0, 200, 50);
 
 		set(jspsm, x, y, 0, 50, 300, 800);
 		set(cpsm, x, y, 0, 850, 300, 50);
@@ -351,7 +349,7 @@ public class StageEditPage extends Page {
 		rems.setLnr(jlst::deleteItem);
 
 		data.setLnr(x -> {
-			headEdit = (headEdit + 1) % 3;
+			headEdit = (headEdit + 1) % 2;
 			data.setText(MainLocale.PAGE, "head" + headEdit);
 			needResize = true;
 		});

@@ -111,16 +111,14 @@ public class AbEnemyFindPage extends Page implements SupPage<AbEnemy> {
         seabt.setLnr((b) -> {
             if (efb != null) {
                 efb.name = seatf.getText();
-
                 efb.callBack(null);
             }
         });
 
-        seatf.addActionListener(e -> {
+        seatf.setTypeLnr(e -> {
             if (efb != null) {
                 efb.name = seatf.getText();
-
-                efb.callBack(null);
+                efb.callBack(1);
             }
         });
     }
