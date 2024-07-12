@@ -980,7 +980,7 @@ public class Interpret extends Data {
     }
 
     public static String readHTMLStage(Stage st, boolean noHtml) {
-        StringBuilder ans = new StringBuilder((noHtml ? "" : "<html>") + "Banned combos: ");
+        StringBuilder ans = new StringBuilder((noHtml ? "" : "<html>") + Page.get(MainLocale.INFO, "comboban") + ": ");
 
         if (st.getCont().stageLimit != null && !st.getCont().stageLimit.bannedCatCombo.isEmpty()) {
             String[] comboData = new String[st.getCont().stageLimit.bannedCatCombo.size()];
@@ -989,7 +989,7 @@ public class Interpret extends Data {
                 comboData[i++] = Page.get(MainLocale.UTIL, "nb" + id);
             ans.append(String.join(", ", comboData));
         } else {
-            ans.append("none");
+            ans.append(Page.get(MainLocale.PAGE, "none"));
         }
 
         if (!noHtml)
@@ -1000,67 +1000,59 @@ public class Interpret extends Data {
 
     public static String readHTML(StageInfo data) { // todo: figure out how to do this with custom stages without stage info (hopefully figure out how to attach all custom stages with stage info????)
         boolean isDef = data instanceof DefStageInfo;
-        StringBuilder ans = new StringBuilder();
+        StringBuilder ans = new StringBuilder("<html>");
 
         if (isDef) {
-            ans.append("<html>energy cost: ").append(data.getEnergy()).append("<br> xp: ").append(data.getXp());
+            ans.append(Page.get(MainLocale.INFO, "energy")).append(": ").append(data.getEnergy());
+            ans.append("<br>").append(Page.get(MainLocale.INFO, "xp")).append(": ").append(data.getXp());
 
-            ans.append("<br> Will be hidden upon full clear : ")
+            ans.append("<br>").append(Page.get(MainLocale.INFO, "hideclear")).append(": ")
                     .append(data.getStage().getCont().info.hiddenUponClear);
 
             if (data.getStage().getCont().info.resetMode != -1) {
-                switch (data.getStage().getCont().info.resetMode) {
-                    case 1:
-                        ans.append("<br> Rewards are reset per appearance");
-                        break;
-                    case 2:
-                        ans.append("<br> Clear status and rewards are reset per appearance");
-                        break;
-                    case 3:
-                        ans.append("<br> Number of plays are reset per appearance");
-                        break;
-                    default:
-                        ans.append("<br> Reset mode flag ")
-                                .append(data.getStage().getCont().info.resetMode);
-                }
+                ans.append("<br>").append(Page.get(MainLocale.INFO, "reward" + data.getStage().getCont().info.resetMode));
             }
 
             if (data.getStage().getCont().info.clearLimit != -1) {
-                ans.append("<br> Play count: ")
+                ans.append("<br>").append(Page.get(MainLocale.INFO, "playnum")).append(": ")
                         .append(data.getStage().getCont().info.clearLimit);
             }
 
             if (data.getStage().getCont().info.waitTime != -1) {
-                ans.append("<br> Time before a play is restored: ")
+                ans.append("<br>").append(Page.get(MainLocale.INFO, "playtime")).append(": ")
                         .append(data.getStage().getCont().info.waitTime)
                         .append(" minute(s)");
             }
 
             if (data.getStage().getCont().info.cantUseGoldCPU) {
-                ans.append("<br> You can't use gold CPU in this stage");
+                ans.append("<br>").append(Page.get(MainLocale.INFO, "nogold"));
             }
         }
 
         ans.append("<br>").append(readHTMLStage(data.getStage(), true));
 
         if (isDef) {
-            ans.append("<br><br> EX stage existing : ")
+            ans.append("<br><br>").append(Page.get(MainLocale.INFO, "exstage")).append(": ")
                     .append(data.hasExConnection() || (data.getExStages() != null && data.getExChances() != null));
 
             if (data.hasExConnection()) {
-                ans.append("<br> EX stage appearance chance : ")
+                ans.append("<br>").append(Page.get(MainLocale.INFO, "exchance")).append(": ")
                         .append(data.getExChance())
-                        .append("%<br> EX Map Name : ")
+                        .append("%<br>").append(Page.get(MainLocale.INFO, "exmap")).append(": ")
                         .append(MultiLangCont.get(MapColc.get("000004").maps.get(data.getExMapId())))
-                        .append("<br> EX Stage ID Min : ")
+                        .append("<br>").append(Page.get(MainLocale.INFO, "exmin")).append(": ")
                         .append(Data.duo(data.getExStageIdMin()))
-                        .append("<bR> EX Stage ID Max : ")
+                        .append("<br>").append(Page.get(MainLocale.INFO, "exmax")).append(": ")
                         .append(Data.duo(data.getExStageIdMax()))
                         .append("<br>");
             }
 
             if (data.getExStages() != null && data.getExChances() != null) {
-                ans.append("<table><tr><th>EX Stage Name</th><th>Chance</th></tr>");
+                ans.append("<table><tr><th>")
+                        .append(Page.get(MainLocale.INFO, "exname"))
+                        .append("</th><th>")
+                        .append(Page.get(MainLocale.INFO, "chance"))
+                        .append("</th></tr>");
 
                 for (int i = 0; i < data.getExStages().length; i++) {
                     if (data.getExStages()[i] == null)
@@ -1093,18 +1085,24 @@ public class Interpret extends Data {
                 ans.append("<br>");
             }
 
-            ans.append("<br> drop rewards");
+            ans.append("<br>").append(Page.get(MainLocale.INFO, "rewards"));
 
             if (data.getDrop() == null || data.getDrop().length == 0) {
-                ans.append(" : none");
+                ans.append(": ").append(Page.get(MainLocale.PAGE, "none"));
             } else {
                 ans.append("<br>");
                 readDropData((DefStageInfo) data, ans);
             }
 
             if (data.getTime().length > 0) {
-                ans.append("<br> time scores: count: ").append(data.getTime().length).append("<br>");
-                ans.append("<table><tr><th>score</th><th>item name</th><th>number</th></tr>");
+                ans.append("<br>").append(Page.get(MainLocale.INFO, "timescore")).append("<br>");
+                ans.append("<table><tr><th>")
+                        .append(Page.get(MainLocale.INFO, "score"))
+                        .append("</th><th>")
+                        .append(Page.get(MainLocale.INFO, "item"))
+                        .append("</th><th>")
+                        .append(Page.get(MainLocale.INFO, "count"))
+                        .append("</th></tr>");
                 for (int[] tm : data.getTime())
                     ans.append("<tr><td>").append(tm[0]).append("</td><td>").append(MultiLangCont.getStageDrop(tm[1])).append("</td><td>").append(tm[2]).append("</td><tr>");
                 ans.append("</table>");
@@ -1113,7 +1111,9 @@ public class Interpret extends Data {
             CustomStageInfo cdata = (CustomStageInfo) data;
             if (cdata.getExStages().length == 0)
                 return null;
-            ans.append("<br><br><table><tr><th>List of Followup Stages:</th></tr>");
+            ans.append("<br><br><table><tr><th>")
+                    .append(Page.get(MainLocale.INFO, "followups"))
+                    .append(":</th></tr>");
             for (int i = 0; i < cdata.getExStages().length; i++)
                 ans.append("<tr><td>")
                         .append(cdata.getExStages()[i].getCont().toString())
@@ -1130,44 +1130,38 @@ public class Interpret extends Data {
 
     public static void readDropData(DefStageInfo data, StringBuilder ans) { // fixme: incorrect rewards for EoC, ItF & EoC/ItF/CotC outbreak
         if (data.drop == null || data.drop.length == 0) {
-            ans.append("none");
+            ans.append(Page.get(MainLocale.PAGE, "none"));
             return;
         }
 
         List<String> chances = data.analyzeRewardChance();
 
         if (chances == null) {
-            ans.append("none");
+            ans.append(Page.get(MainLocale.PAGE, "none"));
             return;
         }
 
-        if (chances.isEmpty()) {
-            ans.append("<table><tr><th>No.</th><th>item name</th><th>amount</th></tr>");
-        } else {
-            ans.append("<table><tr><th>chance</th><th>item name</th><th>amount</th></tr>");
-        }
+        ans.append("<table><tr><th>")
+                .append(Page.get(MainLocale.INFO, chances.isEmpty() ? "numid" : "chance"))
+                .append("</th><th>")
+                .append(Page.get(MainLocale.INFO, "item"))
+                .append("</th><th>")
+                .append(Page.get(MainLocale.INFO, "count"))
+                .append("</th></tr>");
 
         for (int i = 0; i < data.drop.length; i++) {
             if (!chances.isEmpty() && i < chances.size() && Double.parseDouble(chances.get(i)) == 0.0)
                 continue;
 
-            String chance;
-
-            if (chances.isEmpty())
-                chance = String.valueOf(i + 1);
-            else
-                chance = chances.get(i) + "%";
-
+            String chance = chances.isEmpty() ? String.valueOf(i + 1) : chances.get(i) + "%";
             String reward = MultiLangCont.getServerDrop(data.drop[i][1]);
 
             if (reward == null || reward.isEmpty())
-                reward = "Reward " + data.drop[i][1];
-
+                reward = Page.get(MainLocale.INFO, "rewid") + " " + data.drop[i][1];
             if (i == 0 && (data.rand == 1 || (data.drop[i][1] >= 1000 && data.drop[i][1] < 30000)))
-                reward += " (Once)";
-
+                reward += " " + Page.get(MainLocale.INFO, "once");
             if (i == 0 && data.drop[i][0] != 100 && data.rand != -4)
-                reward += " [Treasure Radar]";
+                reward += " " + Page.get(MainLocale.INFO, "radar");
 
             ans.append("<tr><td>")
                     .append(chance)
