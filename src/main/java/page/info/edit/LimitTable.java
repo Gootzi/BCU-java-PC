@@ -3,6 +3,7 @@ package page.info.edit;
 import common.CommonStatic;
 import common.pack.PackData.UserPack;
 import common.util.stage.Limit;
+import common.util.stage.StageLimit;
 import page.*;
 import page.pack.CharaGroupPage;
 import page.pack.LvRestrictPage;
@@ -26,9 +27,9 @@ public class LimitTable extends Page {
 		rarity = Page.get(MainLocale.UTIL, "r", 6);
 	}
 
-	private final JTF jcmin = new JTF();
-	private final JTF jnum = new JTF();
-	private final JTF jcmax = new JTF();
+	private final JTF min = new JTF();
+	private final JTF num = new JTF();
+	private final JTF max = new JTF();
 	private final JTF jcg = new JTF();
 	private final JTF jlr = new JTF();
 	private final JBTN cgb = new JBTN(1, "ht15");
@@ -38,25 +39,22 @@ public class LimitTable extends Page {
 	private final JTG[] brars = new JTG[6];
 
 	private final UserPack pac;
-	private final Page par, main;
 
 	private CharaGroupPage cgp;
 	private LvRestrictPage lrp;
 
 	private Limit lim;
 
-	protected LimitTable(Page p0, Page p1, UserPack p) {
-		super(null);
-		main = p0;
-		par = p1;
+	protected LimitTable(Page p0, UserPack p) {
+		super(p0);
 		pac = p;
 		ini();
 	}
 
 	protected void abler(boolean b) {
-		jcmin.setEnabled(b);
-		jnum.setEnabled(b);
-		jcmax.setEnabled(b);
+		min.setEnabled(b);
+		num.setEnabled(b);
+		max.setEnabled(b);
 		one.setEnabled(b);
 		cgb.setEnabled(b);
 		jcg.setEnabled(b);
@@ -92,14 +90,16 @@ public class LimitTable extends Page {
 		set(rar, x, y, 0, 0, w, 50);
 		for (int i = 0; i < brars.length; i++)
 			set(brars[i], x, y, w + w * i, 0, w, 50);
+		set(min, x, y, 0, 50, w, 50);
+		set(max, x, y, w, 50, w, 50);
+		set(num, x, y, w * 2, 50, w, 50);
+		set(one, x, y, w * 3, 50, w, 50);
 		set(cgb, x, y, w * 4, 50, w, 50);
 		set(jcg, x, y, w * 5, 50, w, 50);
 		set(lrb, x, y, w * 6, 50, w, 50);
 		set(jlr, x, y, w * 7, 50, w, 50);
-		set(jcmin, x, y, 0, 50, w, 50);
-		set(jcmax, x, y, w, 50, w, 50);
-		set(jnum, x, y, w * 2, 50, w, 50);
-		set(one, x, y, w * 3, 50, w, 50);
+
+
 	}
 
 	protected void setLimit(Limit l) {
@@ -107,9 +107,9 @@ public class LimitTable extends Page {
 		if (l == null) {
 			for (int i = 0; i < brars.length; i++)
 				brars[i].setSelected(false);
-			jcmax.setText(limits[4] + ": ");
-			jcmin.setText(limits[3] + ": ");
-			jnum.setText(limits[1] + ": ");
+			max.setText(limits[4] + ": ");
+			min.setText(limits[3] + ": ");
+			num.setText(limits[1] + ": ");
 			jcg.setText("");
 			jlr.setText("");
 			one.setSelected(false);
@@ -124,12 +124,16 @@ public class LimitTable extends Page {
 			for (int i = 0; i < brars.length; i++)
 				brars[i].setSelected(true);
 		}
-		jcmax.setText(limits[4] + ": " + lim.max);
-		jcmin.setText(limits[3] + ": " + lim.min);
-		jnum.setText(limits[1] + ": " + lim.num);
+		max.setText(limits[4] + ": " + lim.max);
+		min.setText(limits[3] + ": " + lim.min);
+		num.setText(limits[1] + ": " + lim.num);
 		jcg.setText("" + lim.group);
 		jlr.setText("" + lim.lvr);
 		one.setSelected(lim.line == 1);
+	}
+
+	protected void setStageLimit(StageLimit sl) {
+
 	}
 
 	private void addListeners() {
@@ -139,20 +143,20 @@ public class LimitTable extends Page {
 		for (int i = 0; i < brars.length; i++) {
 			int I = i;
 			brars[i].addActionListener(e -> {
-				if (par.isAdj())
+				if (getFront().isAdj())
 					return;
 				lim.rare ^= 1 << I;
-				par.callBack(lim);
+				getFront().callBack(lim);
 			});
 		}
 
 		cgb.addActionListener(arg0 -> {
-			cgp = new CharaGroupPage(main, pac, false);
+			cgp = new CharaGroupPage(getFront(), pac, false);
 			changePanel(cgp);
 		});
 
 		lrb.addActionListener(arg0 -> {
-			lrp = new LvRestrictPage(main, pac, false);
+			lrp = new LvRestrictPage(getFront(), pac, false);
 			changePanel(lrp);
 		});
 	}
@@ -162,11 +166,13 @@ public class LimitTable extends Page {
 		add(cgb);
 		add(lrb);
 		add(one);
-		set(jcmin);
-		set(jcmax);
-		set(jnum);
+		set(min);
+		set(max);
+		set(num);
 		set(jcg);
 		set(jlr);
+
+
 		for (int i = 0; i < brars.length; i++) {
 			add(brars[i] = new JTG(rarity[i]));
 			brars[i].setSelected(true);
@@ -176,17 +182,17 @@ public class LimitTable extends Page {
 
 	private void input(JTF jtf, String str) {
 		int val = CommonStatic.parseIntN(str);
-		if (jtf == jcmax) {
+		if (jtf == max) {
 			if (val < 0)
 				return;
 			lim.max = val;
 		}
-		if (jtf == jcmin) {
+		if (jtf == min) {
 			if (val < 0)
 				return;
 			lim.min = val;
 		}
-		if (jtf == jnum) {
+		if (jtf == num) {
 			if (val < 0 || val > 50)
 				return;
 			lim.num = val;
@@ -206,10 +212,10 @@ public class LimitTable extends Page {
 
 			@Override
 			public void focusLost(FocusEvent fe) {
-				if (par.isAdj())
+				if (getFront().isAdj())
 					return;
 				input(jtf, jtf.getText());
-				par.callBack(lim);
+				getFront().callBack(lim);
 			}
 		});
 

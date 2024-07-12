@@ -4,18 +4,15 @@ package page.info.edit;
 import common.battle.data.CustomUnit;
 import common.battle.data.PCoin;
 import common.util.Data;
-import common.util.pack.Background;
-import common.util.stage.Music;
 import common.util.unit.Form;
 import page.JBTN;
 import page.Page;
-import page.SupPage;
 import utilpc.UtilPC;
 
 import javax.swing.*;
 import java.util.Vector;
 
-public class PCoinEditPage extends Page implements SwingEditor.EditCtrl.Supplier {
+public class PCoinEditPage extends Page {
 
     private static final long serialVersionUID = 1L;
 
@@ -141,25 +138,5 @@ public class PCoinEditPage extends Page implements SwingEditor.EditCtrl.Supplier
         add.setEnabled(editable && (unit.pcoin == null || unit.pcoin.max.length < 8));
         rem.setEnabled(editable && coin.getSelectedIndex() != -1);
         pcet.setData(coin.getSelectedIndex());
-    }
-
-    @Override
-    public SupPage<Background> getBGSup(SwingEditor.IdEditor<Background> edi) {
-        return null;
-    }
-
-    @Override
-    public SupPage<Music> getMusicSup(SwingEditor.IdEditor<Music> edi) {
-        return null;
-    }
-
-    @Override
-    public SupPage<?> getEntitySup(SwingEditor.IdEditor<?> edi) {
-        return null;
-    }
-
-    @Override
-    public SupPage<?> getUnitSup(SwingEditor.IdEditor<?> edi) {
-        return null;
     }
 }

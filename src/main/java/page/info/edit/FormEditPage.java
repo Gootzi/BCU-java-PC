@@ -234,7 +234,7 @@ public class FormEditPage extends EntityEditPage {
 			else
 				fdesc[i].setText(uniDesc[i]);
 		flv.setText(lv + "");
-		frs.setText(bas.t().getFinRes(cu.getRespawn()) + "");
+		frs.setText(bas.t().getFinRes(cu.getRespawn(), false) + "");
 		fdr.setText((int) Math.round(cu.getPrice() * 1.5) + "");
 		flr.setText(interpretLayer(cu.back, cu.front));
 		fli.setText(String.valueOf(cu.getLimit()));

@@ -9,8 +9,8 @@ import common.util.unit.Form;
 import common.util.unit.Unit;
 import page.JBTN;
 import page.JL;
-import page.Page;
 import page.JTF;
+import page.Page;
 import page.basis.ComboListTable;
 import page.info.filter.UnitFindPage;
 import page.support.AnimLCR;
@@ -19,8 +19,8 @@ import page.support.UnitLCR;
 import utilpc.Interpret;
 
 import javax.swing.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -136,6 +136,7 @@ public class ComboEditPage extends Page {
         jlu.setCellRenderer(new UnitLCR());
         jlf.setCellRenderer(new AnimLCR());
         jlc.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jlc.setCellSelectionEnabled(true);
         ctypes.setEnabled(false);
         clvls.setEnabled(false);
 

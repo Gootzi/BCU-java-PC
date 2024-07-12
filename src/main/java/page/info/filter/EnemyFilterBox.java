@@ -81,8 +81,8 @@ public abstract class EnemyFilterBox extends Page {
 	}
 
 	/**
-	 0 - filter both type and name
-	 1 - only filter by name
+	 0 - update both type and name to filter
+	 1 - only update name filter
 	 */
 	protected void confirm(int type) {
 		getFront().callBack(type == 0 ? filterType() : type == 1 ? filterName() : null);
@@ -151,7 +151,7 @@ class EFBButton extends EnemyFilterBox {
 						b0 |= isER(e, i);
 				boolean b1 = !orop[0].isSelected();
 				for (int i = 0; i < trait.length; i++)
-					if (ct.size() > 0) {
+					if (!ct.isEmpty()) {
 						if (orop[0].isSelected())
 							for (Trait diyt : ct) {
 								b1 |= trlis.get(i).equals(diyt);
@@ -325,7 +325,7 @@ class EFBList extends EnemyFilterBox {
 				}
 				boolean b1 = !orop[0].isSelected();
 				for (int i : trait.getSelectedIndices())
-					if (ct.size() > 0) {
+					if (!ct.isEmpty()) {
 						if (orop[0].isSelected())
 							for (Trait diyt : ct) {
 								b1 |= trait.list.get(i).equals(diyt);

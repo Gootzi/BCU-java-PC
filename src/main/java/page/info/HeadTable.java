@@ -1,6 +1,7 @@
 package page.info;
 
 import common.util.stage.*;
+import main.MainBCU;
 import org.jetbrains.annotations.NotNull;
 import page.MainFrame;
 import page.MainLocale;
@@ -19,7 +20,7 @@ public class HeadTable extends AbJTable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static String[] infs, limits, rarity;
+	private static String[] infs, limits, rarity, climits;
 
 	static {
 		redefine();
@@ -29,6 +30,7 @@ public class HeadTable extends AbJTable {
 		infs = Page.get(MainLocale.INFO, "ht0", 6);
 		limits = Page.get(MainLocale.INFO, "ht1", 7);
 		rarity = new String[] { "N", "EX", "R", "SR", "UR", "LR" };
+		climits = Page.get(MainLocale.INFO, "ht2", 2);
 	}
 
 	private Object[][] data;
@@ -108,13 +110,20 @@ public class HeadTable extends AbJTable {
 			tit[2 + i] = (i + 1) + star + ": " + st.getCont().stars[i] + "%";
 		tit[6] = Page.get(MainLocale.INFO, "chcos");
 		tit[7] = st.getCont().price + 1;
-		bas[0] = infs[0];
-		bas[1] = st.health;
+		if (st.timeLimit != 0) {
+			bas[0] = Page.get(MainLocale.INFO, "time");
+			bas[1] = st.timeLimit +" min";
+		} else {
+			bas[0] = infs[0];
+			bas[1] = st.health;
+		}
 		bas[2] = infs[1] + ": " + st.len;
 		bas[3] = infs[2] + ": " + st.max;
 		bas[4] = Page.get(MainLocale.INFO, "mus") + ":";
 		bas[5] = st.mus0;
 		bas[6] = "<" + st.mush + "%:";
+		bas[7] = st.mus1;
+
 		bas2[0] = Page.get(MainLocale.INFO, "minspawn");
 		if(st.minSpawn == st.maxSpawn)
 			bas2[1] = st.minSpawn + "f";
@@ -122,17 +131,29 @@ public class HeadTable extends AbJTable {
 			bas2[1] = st.minSpawn + "f ~ " + st.maxSpawn + "f";
 		bas2[2] = MainLocale.getLoc(MainLocale.INFO, "ht03");
 		bas2[3] = !st.non_con;
-		if(st.timeLimit != 0) {
-			bas2[4] = Page.get(MainLocale.INFO, "time");
-			bas2[5] = st.timeLimit +" min";
-		}
-		bas[7] = st.mus1;
+		bas2[4] = Page.get(MainLocale.INFO, "bossguard");
+		bas2[5] = st.bossGuard;
+
 		img[0] = infs[4];
 		img[1] = st.bg;
 		img[2] = "<" + st.bgh + "%";
 		img[3] = st.bg1;
 		img[4] = infs[5];
 		img[5] = st.castle;
+
+		if (st.getCont().stageLimit != null) {
+			if (st.getCont().stageLimit.maxMoney > 0) {
+				bas2[6] = climits[0];
+				bas2[7] = st.getCont().stageLimit.maxMoney;
+			}
+			if (st.getCont().stageLimit.globalCooldown > 0) {
+				img[6] = climits[1];
+				img[7] = MainBCU.seconds
+						? MainBCU.toSeconds(st.getCont().stageLimit.globalCooldown) + "s"
+						: st.getCont().stageLimit.globalCooldown + "f";
+			}
+		}
+
 		Limit lim = st.getLim(0);
 		if (lim != null) {
 			if (lim.rare != 0) {
