@@ -41,7 +41,7 @@ public class StageTable extends AbJTable {
 
 	private final Page page;
 
-	protected StageTable(Page p) {
+	public StageTable(Page p) {
 		super(title);
 
 		page = p;
@@ -92,7 +92,7 @@ public class StageTable extends AbJTable {
 		return data[r][c];
 	}
 
-	protected void clicked(Point p) {
+	public void clicked(Point p) {
 		if (data == null)
 			return;
 		int c = getColumnModel().getColumnIndexAtX(p.x);
@@ -143,7 +143,7 @@ public class StageTable extends AbJTable {
 		}
 	}
 
-	protected void setData(Stage st) {
+	public void setData(Stage st) {
 		Line[] info = st.data.getSimple();
 
 		data = new Object[info.length][11];

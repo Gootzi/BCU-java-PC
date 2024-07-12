@@ -146,7 +146,7 @@ public abstract class AbRecdPage extends Page {
 			if (st == null)
 				changePanel(bp = new BasisPage(getThis()));
 			else
-				changePanel(bp = new BasisPage(getThis(), st.get().getLim(4), st.get().getCont().price));
+				changePanel(bp = new BasisPage(getThis(), st.get(), 4, st.get().getCont().price));
 		});
 
 		rply.setLnr(x -> changePanel(new BattleInfoPage(getThis(), getSelection(), 0)));

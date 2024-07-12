@@ -7,7 +7,7 @@ import common.battle.LineUp;
 import common.pack.UserProfile;
 import common.system.Node;
 import common.util.pack.NyCastle;
-import common.util.stage.Limit;
+import common.util.stage.Stage;
 import common.util.unit.Combo;
 import common.util.unit.Form;
 import common.util.unit.Level;
@@ -95,9 +95,11 @@ public class BasisPage extends LubCont {
 		ini();
 	}
 
-	public BasisPage(Page p, Limit lim, int price) {
+	public BasisPage(Page p, Stage st, int star, int price) {
 		super(p);
-		lub.setLimit(lim, price);
+		lub.setLimit(st.getLim(star), price);
+		if (st.getCont().stageLimit != null)
+			jlcn.setBanned(st.getCont().stageLimit.bannedCatCombo);
 
 		ini();
 	}
@@ -234,7 +236,10 @@ public class BasisPage extends LubCont {
 
 	private void addListeners$0() {
 
-		back.addActionListener(arg0 -> changePanel(getFront()));
+		back.addActionListener(arg0 -> {
+			getFront().callBack(null);
+			changePanel(getFront());
+		});
 
 		unit.addActionListener(e -> changePanel(ufp));
 

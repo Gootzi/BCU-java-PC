@@ -69,17 +69,20 @@ public class StageLimitTable extends Page {
         jlco.setCheck(i -> stli != null && stli.bannedCatCombo.contains(i));
         jlco.addListSelectionListener(x -> {
             banc.setEnabled(jlco.getSelectedIndex() != -1);
-            banc.setText("ban" + (!stli.bannedCatCombo.contains(jlco.getSelectedIndex()) ? "0" : "1"));
+            banc.setText(MainLocale.PAGE, "ban" + (!stli.bannedCatCombo.contains(jlco.getSelectedIndex()) ? "0" : "1"));
         });
 
         banc.setLnr(x -> {
             if (stli == null || jlco.getSelectedIndex() == -1)
                 return;
 
-            if (stli.bannedCatCombo.contains(jlco.getSelectedIndex()))
+            if (stli.bannedCatCombo.contains(jlco.getSelectedIndex())) {
                 stli.bannedCatCombo.remove(jlco.getSelectedIndex());
-            else
+                banc.setText(MainLocale.PAGE, "ban0");
+            } else {
                 stli.bannedCatCombo.add(jlco.getSelectedIndex());
+                banc.setText(MainLocale.PAGE, "ban1");
+            }
 
             jlco.repaint();
         });
