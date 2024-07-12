@@ -4,7 +4,6 @@ import common.util.stage.MapColc;
 import common.util.stage.RandStage;
 import common.util.stage.Stage;
 import common.util.stage.StageMap;
-import common.util.stage.info.DefStageInfo;
 import main.MainBCU;
 import main.Opts;
 import page.JBTN;
@@ -97,10 +96,12 @@ public class StageViewPage extends StagePage {
 	private void addListeners() {
 
 		info.setLnr(x -> {
-			if (stage == null || stage.info == null)
+			if (stage == null)
 				return;
-			if (stage.info instanceof DefStageInfo)
-				Opts.pop(Interpret.readHTMLDef((DefStageInfo) stage.info), "stage info");
+			if (stage.info != null)
+				Opts.pop(Interpret.readHTML(stage.info), "stage info");
+			else
+				Opts.pop(Interpret.readHTMLStage(stage, false), "stage info");
 		});
 
 		recd.setLnr(x -> changePanel(new StRecdPage(this, stage, false)));

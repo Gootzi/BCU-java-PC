@@ -15,7 +15,10 @@ import common.util.lang.MultiLangCont;
 import common.util.lang.ProcLang;
 import common.util.stage.MapColc;
 import common.util.stage.MapColc.DefMapColc;
+import common.util.stage.Stage;
+import common.util.stage.info.CustomStageInfo;
 import common.util.stage.info.DefStageInfo;
+import common.util.stage.info.StageInfo;
 import common.util.unit.Combo;
 import common.util.unit.Enemy;
 import main.MainBCU;
@@ -976,118 +979,152 @@ public class Interpret extends Data {
         return new Point((int) ((p.x + pp.x) / size), (int) ((p.y + pp.y) / size));
     }
 
-    public static String readHTMLDef(DefStageInfo data) {
-        StringBuilder ans = new StringBuilder("<html>energy cost: " + data.energy + "<br> xp: " + data.xp);
+    public static String readHTMLStage(Stage st, boolean noHtml) {
+        StringBuilder ans = new StringBuilder((noHtml ? "" : "<html>") + "Banned combos: ");
 
-        ans.append("<br> Will be hidden upon full clear : ")
-                .append(data.st.getCont().info.hiddenUponClear);
-
-        if (data.st.getCont().info.resetMode != -1) {
-            switch (data.st.getCont().info.resetMode) {
-                case 1:
-                    ans.append("<br> Rewards are reset per appearance");
-                    break;
-                case 2:
-                    ans.append("<br> Clear status and rewards are reset per appearance");
-                    break;
-                case 3:
-                    ans.append("<br> Number of plays are reset per appearance");
-                    break;
-                default:
-                    ans.append("<br> Reset mode flag ")
-                            .append(data.st.getCont().info.resetMode);
-            }
-        }
-
-        if (data.st.getCont().info.clearLimit != -1) {
-            ans.append("<br> Play count: ")
-                    .append(data.st.getCont().info.clearLimit);
-        }
-
-        if (data.st.getCont().info.waitTime != -1) {
-            ans.append("<br> Time before a play is restored: ")
-                    .append(data.st.getCont().info.waitTime)
-                    .append(" minute(s)");
-        }
-
-        if (data.st.getCont().info.cantUseGoldCPU) {
-            ans.append("<br> You can't use gold CPU in this stage");
-        }
-
-        if (data.st.getCont().stageLimit != null && !data.st.getCont().stageLimit.bannedCatCombo.isEmpty()) {
-            String[] comboData = new String[data.st.getCont().stageLimit.bannedCatCombo.size()];
-            ans.append("<br> Banned combos: ");
+        if (st.getCont().stageLimit != null && !st.getCont().stageLimit.bannedCatCombo.isEmpty()) {
+            String[] comboData = new String[st.getCont().stageLimit.bannedCatCombo.size()];
             int i = 0;
-            for (int id : data.st.getCont().stageLimit.bannedCatCombo)
+            for (int id : st.getCont().stageLimit.bannedCatCombo)
                 comboData[i++] = Page.get(MainLocale.UTIL, "nb" + id);
             ans.append(String.join(", ", comboData));
+        } else {
+            ans.append("none");
         }
 
-        ans.append("<br><br> EX stage existing : ")
-                .append(data.exConnection || (data.exStages != null && data.exChances != null));
+        if (!noHtml)
+            ans.append("</html>");
 
-        if (data.exConnection) {
-            ans.append("<br> EX stage appearance chance : ")
-                    .append(data.exChance)
-                    .append("%<br> EX Map Name : ")
-                    .append(MultiLangCont.get(MapColc.get("000004").maps.get(data.exMapID)))
-                    .append("<br> EX Stage ID Min : ")
-                    .append(Data.duo(data.exStageIDMin))
-                    .append("<bR> EX Stage ID Max : ")
-                    .append(Data.duo(data.exStageIDMax))
-                    .append("<br>");
-        }
+        return ans.toString();
+    }
 
-        if (data.exStages != null && data.exChances != null) {
-            ans.append("<table><tr><th>EX Stage Name</th><th>Chance</th></tr>");
+    public static String readHTML(StageInfo data) { // todo: figure out how to do this with custom stages without stage info (hopefully figure out how to attach all custom stages with stage info????)
+        boolean isDef = data instanceof DefStageInfo;
+        StringBuilder ans = new StringBuilder();
 
-            for (int i = 0; i < data.exStages.length; i++) {
-                if (data.exStages[i] == null)
-                    continue;
+        if (isDef) {
+            ans.append("<html>energy cost: ").append(data.getEnergy()).append("<br> xp: ").append(data.getXp());
 
-                String name = MultiLangCont.get(data.exStages[i]);
-                String smName = MultiLangCont.get(data.exStages[i].getCont());
+            ans.append("<br> Will be hidden upon full clear : ")
+                    .append(data.getStage().getCont().info.hiddenUponClear);
 
-                if (name == null || name.isEmpty())
-                    name = data.exStages[i].id.toString();
-                else if (smName == null || smName.isEmpty()) {
-                    smName = data.exStages[i].getCont().id.toString();
-
-                    name = smName + " - " + name;
-                } else {
-                    name = smName + " - " + name;
+            if (data.getStage().getCont().info.resetMode != -1) {
+                switch (data.getStage().getCont().info.resetMode) {
+                    case 1:
+                        ans.append("<br> Rewards are reset per appearance");
+                        break;
+                    case 2:
+                        ans.append("<br> Clear status and rewards are reset per appearance");
+                        break;
+                    case 3:
+                        ans.append("<br> Number of plays are reset per appearance");
+                        break;
+                    default:
+                        ans.append("<br> Reset mode flag ")
+                                .append(data.getStage().getCont().info.resetMode);
                 }
-
-                ans.append("<tr><td>")
-                        .append(name)
-                        .append("</td><td>")
-                        .append(df.format(data.exChances[i]))
-                        .append("%</td></tr>");
             }
 
-            ans.append("</table>");
+            if (data.getStage().getCont().info.clearLimit != -1) {
+                ans.append("<br> Play count: ")
+                        .append(data.getStage().getCont().info.clearLimit);
+            }
+
+            if (data.getStage().getCont().info.waitTime != -1) {
+                ans.append("<br> Time before a play is restored: ")
+                        .append(data.getStage().getCont().info.waitTime)
+                        .append(" minute(s)");
+            }
+
+            if (data.getStage().getCont().info.cantUseGoldCPU) {
+                ans.append("<br> You can't use gold CPU in this stage");
+            }
         }
 
-        if (!data.exConnection && (data.exStages == null || data.exChances == null)) {
-            ans.append("<br>");
-        }
+        ans.append("<br>").append(readHTMLStage(data.getStage(), true));
 
-        ans.append("<br> drop rewards");
+        if (isDef) {
+            ans.append("<br><br> EX stage existing : ")
+                    .append(data.hasExConnection() || (data.getExStages() != null && data.getExChances() != null));
 
-        if (data.drop == null || data.drop.length == 0) {
-            ans.append(" : none");
+            if (data.hasExConnection()) {
+                ans.append("<br> EX stage appearance chance : ")
+                        .append(data.getExChance())
+                        .append("%<br> EX Map Name : ")
+                        .append(MultiLangCont.get(MapColc.get("000004").maps.get(data.getExMapId())))
+                        .append("<br> EX Stage ID Min : ")
+                        .append(Data.duo(data.getExStageIdMin()))
+                        .append("<bR> EX Stage ID Max : ")
+                        .append(Data.duo(data.getExStageIdMax()))
+                        .append("<br>");
+            }
+
+            if (data.getExStages() != null && data.getExChances() != null) {
+                ans.append("<table><tr><th>EX Stage Name</th><th>Chance</th></tr>");
+
+                for (int i = 0; i < data.getExStages().length; i++) {
+                    if (data.getExStages()[i] == null)
+                        continue;
+
+                    String name = MultiLangCont.get(data.getExStages()[i]);
+                    String smName = MultiLangCont.get(data.getExStages()[i].getCont());
+
+                    if (name == null || name.isEmpty())
+                        name = data.getExStages()[i].id.toString();
+                    else if (smName == null || smName.isEmpty()) {
+                        smName = data.getExStages()[i].getCont().id.toString();
+
+                        name = smName + " - " + name;
+                    } else {
+                        name = smName + " - " + name;
+                    }
+
+                    ans.append("<tr><td>")
+                            .append(name)
+                            .append("</td><td>")
+                            .append(df.format(data.getExChances()[i]))
+                            .append("%</td></tr>");
+                }
+
+                ans.append("</table>");
+            }
+
+            if (!data.hasExConnection() && (data.getExStages() == null || data.getExChances() == null)) {
+                ans.append("<br>");
+            }
+
+            ans.append("<br> drop rewards");
+
+            if (data.getDrop() == null || data.getDrop().length == 0) {
+                ans.append(" : none");
+            } else {
+                ans.append("<br>");
+                readDropData((DefStageInfo) data, ans);
+            }
+
+            if (data.getTime().length > 0) {
+                ans.append("<br> time scores: count: ").append(data.getTime().length).append("<br>");
+                ans.append("<table><tr><th>score</th><th>item name</th><th>number</th></tr>");
+                for (int[] tm : data.getTime())
+                    ans.append("<tr><td>").append(tm[0]).append("</td><td>").append(MultiLangCont.getStageDrop(tm[1])).append("</td><td>").append(tm[2]).append("</td><tr>");
+                ans.append("</table>");
+            }
         } else {
-            ans.append("<br>");
-            readDropData(data, ans);
+            CustomStageInfo cdata = (CustomStageInfo) data;
+            if (cdata.getExStages().length == 0)
+                return null;
+            ans.append("<br><br><table><tr><th>List of Followup Stages:</th></tr>");
+            for (int i = 0; i < cdata.getExStages().length; i++)
+                ans.append("<tr><td>")
+                        .append(cdata.getExStages()[i].getCont().toString())
+                        .append(" - ")
+                        .append(cdata.getExStages()[i].toString())
+                        .append("</td><td>")
+                        .append(df.format(cdata.getExChances()[i]))
+                        .append("%</td></tr>");
         }
 
-        if (data.time.length > 0) {
-            ans.append("<br> time scores: count: ").append(data.time.length).append("<br>");
-            ans.append("<table><tr><th>score</th><th>item name</th><th>number</th></tr>");
-            for (int[] tm : data.time)
-                ans.append("<tr><td>").append(tm[0]).append("</td><td>").append(MultiLangCont.getStageDrop(tm[1])).append("</td><td>").append(tm[2]).append("</td><tr>");
-            ans.append("</table>");
-        }
+
         return ans.toString();
     }
 

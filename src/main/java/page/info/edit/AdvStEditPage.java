@@ -278,7 +278,7 @@ public class AdvStEditPage extends Page {
 
 	@Override
 	public void renew() {
-		if (svp != null && svp.getSelectedStages().size() > 0) {
+		if (svp != null && !svp.getSelectedStages().isEmpty()) {
 			if (st.info == null)
 				st.info = new CustomStageInfo(st);
 			CustomStageInfo csi = (CustomStageInfo)st.info;
