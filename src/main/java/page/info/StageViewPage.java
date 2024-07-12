@@ -40,9 +40,10 @@ public class StageViewPage extends StagePage {
 	private final JBTN shsm = new JBTN(0, "showsm");
 
 	private final JBTN dgen = new JBTN(0, "dungeon");
+	private final JBTN srch = new JBTN(0, "asrch");
+
 	private final JBTN recd = new JBTN(0, "replay");
 	private final JBTN info = new JBTN(0, "info");
-	private final JBTN srch = new JBTN(0, "asrch");
 
 	private final JTF smnm = new JTF();
 	private final JTF snam = new JTF();
@@ -80,17 +81,24 @@ public class StageViewPage extends StagePage {
 
 		set(dgen, x, y, 600, 0, 200, 50);
 		set(strt, x, y, 400, 0, 200, 50);
-		set(recd, x, y, 1850, 350, 200, 50);
-		set(info, x, y, 1600, 350, 200, 50);
 		set(srch, x, y, 200, 0, 200, 50);
+
+		set(info, x, y, 1600, 350, 200, 50);
+		set(recd, x, y, 1850, 350, 200, 50);
 	}
 
 	@Override
-	protected void setData(Stage st) {
-		super.setData(st);
+	protected void setData(Stage st, int starId) {
+		super.setData(st, starId);
 		cpst.setEnabled(st != null);
 		shsm.setEnabled(st != null);
 		recd.setEnabled(st != null);
+	}
+
+	@Override
+	public void callBack(Object v) {
+		if (v instanceof Integer)
+			setData(stage, (int) v);
 	}
 
 	private void addListeners() {
@@ -139,7 +147,7 @@ public class StageViewPage extends StagePage {
 			shsm.setEnabled(false);
 			if (s == null)
 				return;
-			setData(s);
+			setData(s, 0);
 		});
 
 		cpsm.addActionListener(arg0 -> {

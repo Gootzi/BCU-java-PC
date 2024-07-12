@@ -72,11 +72,38 @@ public class HeadTable extends AbJTable {
 		return data[r][c];
 	}
 
+	protected void hover(Point p) {
+		if (data == null)
+			return;
+		int c = getColumnModel().getColumnIndexAtX(p.x);
+		int r = p.y / getRowHeight();
+		if (r == 0 && c > 1 && c < Math.min(sta.getCont().stars.length + 2, 6))
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		else if (r == 1 && c == 5)
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		else if (r == 1 && c == 7)
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		else if (r == 3 && c == 1)
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		else if (r == 3 && c == 3)
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		else if (r == 3 && c == 5)
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		else if (r == 4 && c == 7 && data[r][c] instanceof LvRestrict)
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		else if (r == 3 && c == 7 && data[r][c] != null)
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		else
+			setCursor(Cursor.getDefaultCursor());
+	}
+
 	protected void clicked(Point p) {
 		if (data == null)
 			return;
 		int c = getColumnModel().getColumnIndexAtX(p.x);
 		int r = p.y / getRowHeight();
+		if (r == 0 && c > 1 && c < Math.min(sta.getCont().stars.length + 2, 6))
+			page.callBack(c - 2);
 		if (r == 1 && c == 5)
 			MainFrame.changePanel(new MusicPage(page, sta.mus0));
 		if (r == 1 && c == 7)
