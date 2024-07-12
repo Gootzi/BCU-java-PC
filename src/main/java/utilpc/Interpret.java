@@ -1128,7 +1128,7 @@ public class Interpret extends Data {
         return ans.toString();
     }
 
-    public static void readDropData(DefStageInfo data, StringBuilder ans) {
+    public static void readDropData(DefStageInfo data, StringBuilder ans) { // fixme: incorrect rewards for EoC, ItF & EoC/ItF/CotC outbreak
         if (data.drop == null || data.drop.length == 0) {
             ans.append("none");
             return;
