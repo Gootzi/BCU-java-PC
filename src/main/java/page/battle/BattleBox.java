@@ -992,11 +992,13 @@ public interface BattleBox {
 				return;
 			}
 
-			if(min < 10) {
-				FakeImage m = aux.timer[min].getImg();
+			if(min < 100) {
+				FakeImage m = aux.timer[min/10].getImg();
 
-				g.drawImage(zero, p.x, p.y, zero.getWidth() * ratio, zero.getHeight() * ratio);
-				p.x += zero.getWidth() * ratio;
+				g.drawImage(m, p.x, p.y, m.getWidth() * ratio, m.getHeight() * ratio);
+				p.x += m.getWidth() * ratio;
+
+				m = aux.timer[min%10].getImg();
 
 				g.drawImage(m, p.x, p.y, m.getWidth()*ratio, m.getHeight()*ratio);
 				p.x += m.getWidth() * ratio;
