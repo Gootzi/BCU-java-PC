@@ -24,8 +24,7 @@ public strictfp class MainLocale {
 	public static final int PAGE = 0, INFO = 1, INTERNET = 2, UTIL = 3;
 	public static final Map<String, MainLocale> NAMP = new TreeMap<>();
 	public static final Map<String, TTT> TMAP = new TreeMap<>();
-	public static final String[] LOC_NAME = { "English", "\u4E2D\u6587", "\uD55C\uAD6D\uC5B4", "\u65E5\u672C\u8A9E", "Français", "Italiano", "Español", "Deutsche" };
-	public static final int[] LOC_INDEX = {0, 1, 2, 3, 6, 9, 8, 5};
+	public static final String[] LOC_NAME = { "English", "\u4E2D\u6587", "\uD55C\uAD6D\uC5B4", "\u65E5\u672C\u8A9E", "RU", "Deutsche", "Français", "Español", "Italiano", "TH", }; // FIXME: lang names
 	public static final String[] RENN = { "page", "info", "internet", "util" };
 	private static final ResourceBundle[] RENS = new ResourceBundle[4];
 
@@ -92,8 +91,8 @@ public strictfp class MainLocale {
 		return ans;
 	}
 
-	public static void saveWorks() {
-		for (String loc : Lang.LOC_CODE) {
+	public static void saveWorks() { // todo: seems to be unused?
+		for (Lang.Locale[] loc : Lang.pref) {
 			TTT ttt = TMAP.get(loc);
 			if (ttt != null && ttt.edited)
 				ttt.write(BCUWriter.newFile("./lib/lang/" + loc + "/tutorial.txt"));
@@ -114,7 +113,7 @@ public strictfp class MainLocale {
 			return ans;
 		if (exTTT)
 			return "[" + page + "_" + text + "]";
-		loc = Lang.LOC_CODE[0];
+		loc = Lang.Locale.EN.code;
 		if (TMAP.containsKey(loc))
 			return TMAP.get(loc).getTTT(page, text);
 		return null;
@@ -148,7 +147,7 @@ public strictfp class MainLocale {
 	}
 
 	private static String langCode() {
-		return CommonStatic.Lang.LOC_CODE[CommonStatic.getConfig().lang];
+		return CommonStatic.getConfig().lang.code;
 	}
 
 	public final Map<String, String> res = new TreeMap<>();

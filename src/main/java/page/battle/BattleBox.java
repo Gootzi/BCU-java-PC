@@ -352,11 +352,11 @@ public interface BattleBox {
 
 		private int getFireLang() {
 			switch (CommonStatic.getConfig().lang) {
-				case 1:
+				case ZH:
 					return 18;
-				case 2:
+				case KR:
 					return 16;
-				case 3:
+				case JP:
 					return 12;
 				default:
 					return 14;
@@ -426,7 +426,7 @@ public interface BattleBox {
 							}
 
 							if (sb.spiritCooldown[i][j] == 0) {
-								FakeImage summonText = aux.spiritSummon[Res.decideLocale()].getImg();
+								FakeImage summonText = aux.spiritSummon[Res.decideLocale().ordinal()].getImg();
 
 								int stw = (int) (summonText.getWidth() * hr);
 								int sth = (int) (summonText.getHeight() * hr);
@@ -536,7 +536,7 @@ public interface BattleBox {
 						}
 
 						if (!isBehind && sb.spiritCooldown[index][i] == 0) {
-							FakeImage summonText = aux.spiritSummon[Res.decideLocale()].getImg();
+							FakeImage summonText = aux.spiritSummon[Res.decideLocale().ordinal()].getImg();
 
 							int stw = (int) (summonText.getWidth() * hr);
 							int sth = (int) (summonText.getHeight() * hr);

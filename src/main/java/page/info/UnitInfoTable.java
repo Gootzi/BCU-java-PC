@@ -414,7 +414,7 @@ public class UnitInfoTable extends Page {
 					wrapped = str.substring(0, i++);
 
 				int maximum; //JP proc texts don't count with space, this is here to prevent it from staying in while loop forever
-				if (CommonStatic.getConfig().lang == 3)
+				if (CommonStatic.getConfig().lang == CommonStatic.Lang.Locale.JP)
 					maximum = Math.max(wrapped.lastIndexOf("。"), wrapped.lastIndexOf("、"));
 				else
 					maximum = Math.max(Math.max(wrapped.lastIndexOf(" "), wrapped.lastIndexOf(".")), wrapped.lastIndexOf(","));

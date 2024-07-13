@@ -321,7 +321,7 @@ public class EnemyInfoTable extends Page {
 					wrapped = str.substring(0, i++);
 
 				int maximum;
-				if (CommonStatic.getConfig().lang == 3)
+				if (CommonStatic.getConfig().lang == CommonStatic.Lang.Locale.JP)
 					maximum = Math.max(wrapped.lastIndexOf("。"),wrapped.lastIndexOf("、"));
 				else
 					maximum = Math.max(Math.max(wrapped.lastIndexOf(" "), wrapped.lastIndexOf(".")), wrapped.lastIndexOf(","));

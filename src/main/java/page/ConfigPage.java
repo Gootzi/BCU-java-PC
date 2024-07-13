@@ -76,7 +76,7 @@ public class ConfigPage extends Page {
 	private final JSlider jsse = new JSlider(0, 100);
 	private final JSlider jsui = new JSlider(0, 100);
 	private final JSlider jsba = new JSlider(0, 50);
-	private final JList<String> jls = new JList<>(MainLocale.LOC_NAME);
+	private final JList<CommonStatic.Lang.Locale> jls = new JList<>(CommonStatic.Lang.Locale.values());
 	private final JBTN row = new JBTN(MainLocale.PAGE, CommonStatic.getConfig().twoRow ? "tworow" : "onerow");
 	private final JBTN vcol = new JBTN(MainLocale.PAGE, "viewcolor");
 	private final JBTN vres = new JBTN(MainLocale.PAGE, "viewreset");
@@ -312,10 +312,9 @@ public class ConfigPage extends Page {
 			if (changing)
 				return;
 			changing = true;
-			if (jls.getSelectedIndex() == -1) {
-				jls.setSelectedIndex(localeIndexOf(cfg().lang));
-			}
-			cfg().lang = MainLocale.LOC_INDEX[jls.getSelectedIndex()];
+			if (jls.getSelectedIndex() == -1)
+				jls.setSelectedIndex(0);
+			cfg().lang = jls.getSelectedValue();
 			Page.renewLoc(getThis());
 			changing = false;
 		});
@@ -483,7 +482,7 @@ public class ConfigPage extends Page {
 		add(jtol);
 		excont.setSelected(CommonStatic.getConfig().exContinuation);
 		prlvmd.setText(String.valueOf(CommonStatic.getConfig().prefLevel));
-		jls.setSelectedIndex(localeIndexOf(cfg().lang));
+		jls.setSelectedValue(cfg().lang, true);
 		jsmin.setValue(cfg().deadOpa);
 		jsmax.setValue(cfg().fullOpa);
 		jsbg.setValue(BCMusic.VOL_BG);
@@ -555,14 +554,5 @@ public class ConfigPage extends Page {
 		sl.setMinorTickSpacing(5);
 		sl.setPaintTicks(true);
 		sl.setPaintLabels(true);
-	}
-
-	private int localeIndexOf(int elem) {
-		for(int i = 0; i < MainLocale.LOC_INDEX.length; i++) {
-			if(MainLocale.LOC_INDEX[i] == elem)
-				return i;
-		}
-
-		return -1;
 	}
 }

@@ -888,7 +888,7 @@ public class Interpret extends Data {
         StringBuilder builder = new StringBuilder("[");
 
         switch (CommonStatic.getConfig().lang) {
-            case 1:
+            case ZH:
                 builder.append("第 ");
 
                 for (int i = 0; i < inds.size(); i++) {
@@ -900,7 +900,7 @@ public class Interpret extends Data {
                 }
 
                 return builder.append(" 次攻擊]").toString();
-            case 2:
+            case KR:
                 for (int i = 0; i < inds.size(); i++) {
                     builder.append(inds.get(i));
 
@@ -910,7 +910,7 @@ public class Interpret extends Data {
                 }
 
                 return builder.append(" 번째 공격]").toString();
-            case 3:
+            case JP:
                 for (int i = 0; i < inds.size(); i++) {
                     builder.append(inds.get(i));
 
