@@ -8,6 +8,7 @@ import page.battle.BattleSetupPage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class StagePage extends Page {
 
@@ -55,12 +56,12 @@ public class StagePage extends Page {
 		info.setRowHeight(size(x, y, 50));
 	}
 
-	protected void setData(Stage st) {
+	protected void setData(Stage st, int starId) {
 		stage = st;
 		strt.setEnabled(st != null);
 		if(st != null) {
 			info.setData(st);
-			jt.setData(st);
+			jt.setData(st, Math.min(starId, st.getCont().stars.length - 1));
 		}
 		jspjt.scrollRectToVisible(new Rectangle(0, 0, 1, 1));
 	}
@@ -82,6 +83,12 @@ public class StagePage extends Page {
 		add(jspinfo);
 		add(strt);
 		strt.setEnabled(false);
+		info.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				info.hover(e.getPoint());
+			}
+		});
 		addListeners();
 	}
 

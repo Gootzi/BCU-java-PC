@@ -84,6 +84,7 @@ public class ConfigPage extends Page {
 	private final JL autosave = new JL(MainLocale.PAGE, "autosave");
 	private final JTF savetime = new JTF(MainBCU.autoSaveTime > 0 ? MainBCU.autoSaveTime + "min" : "deactivated");
 	private final JTF tole = new JTF(String.valueOf(MainBCU.searchTolerance));
+	private final JTG dyna = new JTG(MainLocale.PAGE, "dynamic");
 	private final JCB reallv = new JCB(MainLocale.PAGE, "reallv");
 
 	private final JScrollPane jsps = new JScrollPane(jls);
@@ -171,14 +172,15 @@ public class ConfigPage extends Page {
 
 		set(jtol, x, y, 1225, 475, 200, 50);
 		set(tole, x, y, 1425, 475, 200, 50);
-		set(preflv, x, y, 1225, 550, 200, 50);
-		set(prlvmd, x, y, 1425, 550, 200, 50);
-		set(autosave, x, y, 1225, 625, 200, 50);
-		set(savetime, x, y, 1425, 625, 200, 50);
+		set(dyna, x, y, 1425, 550, 200, 50);
+		set(preflv, x, y, 1225, 625, 200, 50);
+		set(prlvmd, x, y, 1425, 625, 200, 50);
+		set(autosave, x, y, 1225, 700, 200, 50);
+		set(savetime, x, y, 1425, 700, 200, 50);
 
-		set(rlpk, x, y, 1225, 700, 400, 50);
-		set(vcol, x, y, 1225, 775, 400, 50);
-		set(vres, x, y, 1225, 850, 400, 50);
+		set(rlpk, x, y, 1225, 775, 400, 50);
+		set(vcol, x, y, 1225, 850, 400, 50);
+		set(vres, x, y, 1225, 925, 400, 50);
 
 		set(jlla, x, y, 1750, 100, 300, 50);
 		set(jsps, x, y, 1750, 150, 300, 300);
@@ -414,6 +416,11 @@ public class ConfigPage extends Page {
 			MainBCU.searchTolerance = Math.max(0, CommonStatic.parseIntN(tole.getText()));
 			tole.setText(String.valueOf(MainBCU.searchTolerance));
 		});
+
+		dyna.setLnr(c -> {
+			MainBCU.useDynamic = dyna.isSelected();
+			tole.setEnabled(!dyna.isSelected());
+		});
 	}
 
 	private void ini() {
@@ -472,6 +479,7 @@ public class ConfigPage extends Page {
 		add(shake);
 		add(reallv);
 		add(tole);
+		add(dyna);
 		add(jtol);
 		excont.setSelected(CommonStatic.getConfig().exContinuation);
 		prlvmd.setText(String.valueOf(CommonStatic.getConfig().prefLevel));
@@ -525,6 +533,8 @@ public class ConfigPage extends Page {
 		shake.setSelected(cfg().shake);
 		reallv.setSelected(cfg().realLevel);
 		reallv.setToolTipText(get(MainLocale.PAGE, "reallvtip"));
+		dyna.setSelected(MainBCU.useDynamic);
+		tole.setEnabled(!MainBCU.useDynamic);
 		addListeners();
 	}
 

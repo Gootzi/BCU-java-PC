@@ -7,6 +7,7 @@ import common.util.stage.StageMap;
 import common.util.stage.info.DefStageInfo;
 import page.*;
 import page.battle.BattleInfoPage;
+import utilpc.UtilPC;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -46,6 +47,10 @@ public class Opts {
 
 	public static boolean conf(String text) {
 		return warning(text, "confirmation");
+	}
+
+	public static boolean confLong(String text) {
+		return warningLong(text, "confirmation");
 	}
 
 	public static void dloadErr(String text) {
@@ -145,6 +150,18 @@ public class Opts {
 	private static boolean warning(String text, String title) {
 		int opt = JOptionPane.OK_CANCEL_OPTION;
 		int val = JOptionPane.showConfirmDialog(null, text, title, opt);
+		return val == JOptionPane.OK_OPTION;
+	}
+
+	public static boolean warningLong(String text, String title) {
+		JTextArea txt = new JTextArea(text);
+		JScrollPane scroll = new JScrollPane(txt);
+		txt.setLineWrap(true);
+		txt.setWrapStyleWord(true);
+		txt.setEditable(false);
+		scroll.setPreferredSize(UtilPC.size(1000, 500));
+		int opt = JOptionPane.OK_CANCEL_OPTION;
+		int val = JOptionPane.showConfirmDialog(null, scroll, title, opt);
 		return val == JOptionPane.OK_OPTION;
 	}
 
@@ -377,7 +394,7 @@ public class Opts {
 
 	@SuppressWarnings("MagicConstant")
 	public static void showExStageSelection(String title, String content, Stage s, BattleInfoPage bp) {
-		if(s.info == null || !(s.info.exConnection() || s.info.getExStages() != null))
+		if(s.info == null || !(s.info.hasExConnection() || s.info.getExStages() != null))
 			throw new IllegalStateException("This stage doesn't have EX stage");
 
 		JLabel contents = new JLabel(content);

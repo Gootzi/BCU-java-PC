@@ -80,12 +80,52 @@ public abstract class EnemyFilterBox extends Page {
 		return enemf;
 	}
 
+	protected List<Enemy> filterNameDynamic() {
+
+		if(name.isEmpty())
+			return enem;
+
+		int nlen = name.length();
+		int toll = MainBCU.dynamicTolerance[Math.min(MainBCU.dynamicTolerance.length-1, nlen)];
+
+		String lowName = name.toLowerCase();
+		String headFname;
+
+		List<Enemy> enemf = new ArrayList<>();
+		for (Enemy e : enem) {
+			String fname = MultiLangCont.getStatic().ENAME.getCont(e);
+			if (fname == null)
+				continue;
+			fname = fname.toLowerCase();
+
+			switch (nlen) {
+				case 1:
+					if(fname.startsWith(lowName) || fname.contains(" " + lowName))
+						enemf.add(e);
+					break;
+				case 2:
+				case 3:
+					if(fname.startsWith(lowName) || fname.contains(" " + lowName) || fname.contains(lowName + " ") || fname.endsWith(lowName))
+						enemf.add(e);
+					break;
+				default:
+					headFname = fname.substring(0, Math.min(fname.length(), nlen + toll));
+					if( (fname.charAt(0) == lowName.charAt(0) && (UtilPC.damerauLevenshteinDistance(headFname, lowName) <= 2 * toll)) || fname.contains(lowName))
+						enemf.add(e);
+					break;
+			}
+		}
+		return enemf;
+	}
+
 	/**
-	 0 - filter both type and name
-	 1 - only filter by name
+	 0 - update both type and name to filter
+	 1 - only update name filter
 	 */
 	protected void confirm(int type) {
-		getFront().callBack(type == 0 ? filterType() : type == 1 ? filterName() : null);
+		getFront().callBack(type == 0 ? filterType()
+				: type == 1 ? (MainBCU.useDynamic ? filterNameDynamic() : filterName())
+				: null);
 	}
 
 }
@@ -151,7 +191,7 @@ class EFBButton extends EnemyFilterBox {
 						b0 |= isER(e, i);
 				boolean b1 = !orop[0].isSelected();
 				for (int i = 0; i < trait.length; i++)
-					if (ct.size() > 0) {
+					if (!ct.isEmpty()) {
 						if (orop[0].isSelected())
 							for (Trait diyt : ct) {
 								b1 |= trlis.get(i).equals(diyt);
@@ -198,7 +238,7 @@ class EFBButton extends EnemyFilterBox {
 			}
 		}
 
-		return filterName();
+		return MainBCU.useDynamic ? filterNameDynamic() : filterName();
 	}
 
 	private void ini() {
@@ -325,7 +365,7 @@ class EFBList extends EnemyFilterBox {
 				}
 				boolean b1 = !orop[0].isSelected();
 				for (int i : trait.getSelectedIndices())
-					if (ct.size() > 0) {
+					if (!ct.isEmpty()) {
 						if (orop[0].isSelected())
 							for (Trait diyt : ct) {
 								b1 |= trait.list.get(i).equals(diyt);
@@ -368,7 +408,7 @@ class EFBList extends EnemyFilterBox {
 			}
 		}
 
-		return filterName();
+		return MainBCU.useDynamic ? filterNameDynamic() : filterName();
 	}
 
 	private void ini() {

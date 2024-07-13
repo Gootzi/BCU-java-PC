@@ -18,9 +18,12 @@ import page.MainFrame;
 import page.MainLocale;
 import page.Page;
 import page.info.EnemyInfoPage;
-import page.info.filter.EnemyFindPage;
+import page.info.filter.AbEnemyFindPage;
 import page.pack.EREditPage;
-import page.support.*;
+import page.support.AbJTable;
+import page.support.EnemyTCR;
+import page.support.InTableTH;
+import page.support.Reorderable;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -101,8 +104,8 @@ public class StageEditTable extends AbJTable implements Reorderable {
 		return stage.datas.length;
 	}
 
-	public void updateAbEnemy(Enemy e) {
-		stage.datas[findIndex].enemy = e.id;
+	public void updateAbEnemy(AbEnemy e) {
+		stage.datas[findIndex].enemy = e != null ? e.getID() : null;
 		findIndex = -1;
 	}
 
@@ -291,9 +294,9 @@ public class StageEditTable extends AbJTable implements Reorderable {
 				MainFrame.changePanel(new EREditPage(page, pack, (EneRand) e));
 		} else if (SwingUtilities.isRightMouseButton(event)) {
 			findIndex = ind;
-			EnemyFindPage find = pack != null
-					? new EnemyFindPage(page, pack.desc.id, pack.desc.dependency.toArray(new String[0]))
-					: new EnemyFindPage(page);
+			AbEnemyFindPage find = pack != null
+					? new AbEnemyFindPage(page, pack.desc.id, pack.desc.dependency.toArray(new String[0]))
+					: new AbEnemyFindPage(page);
 			MainFrame.changePanel(find);
 		}
 	}

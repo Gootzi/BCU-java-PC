@@ -7,7 +7,10 @@ import common.pack.PackData.UserPack;
 import common.pack.UserProfile;
 import common.util.Data;
 import common.util.pack.Background;
-import common.util.stage.*;
+import common.util.stage.CastleImg;
+import common.util.stage.CastleList;
+import common.util.stage.Music;
+import common.util.stage.Stage;
 import org.jcodec.common.tools.MathUtil;
 import page.*;
 import page.view.BGViewPage;
@@ -40,6 +43,7 @@ class HeadEditTable extends Page {
 	private final JTF jbgh = new JTF();
 	private final JTF jbg1 = new JTF();
 	private final JTG con = new JTG(MainLocale.INFO, "ht03");
+	private final JTG bgrd = new JTG(MainLocale.INFO, "bossguard");
 	private final JTF[] star = new JTF[4];
 	private final JTF jmax = new JTF();
 	private final JL res = new JL(MainLocale.INFO, "minspawn");
@@ -47,7 +51,6 @@ class HeadEditTable extends Page {
 	private final JTF jres = new JTF();
 	private final JTF cos = new JTF();
 	private final JTG dojo = new JTG(MainLocale.PAGE,"dojo");
-	private final LimitTable lt;
 
 	private Stage sta;
 	private final UserPack pac;
@@ -61,7 +64,6 @@ class HeadEditTable extends Page {
 	protected HeadEditTable(Page p, UserPack pack) {
 		super(p);
 		pac = pack;
-		lt = new LimitTable(p, this, pac);
 		ini();
 	}
 
@@ -77,7 +79,6 @@ class HeadEditTable extends Page {
 
 	@Override
 	protected void renew() {
-		lt.renew();
 		if (bvp != null && bvp.getSelected() != null) {
 			Identifier<Background> val = bvp.getSelected().id;
 			if (val == null)
@@ -145,14 +146,13 @@ class HeadEditTable extends Page {
 		set(cas, x, y, w * 4, 100, w, 50);
 		set(jcas, x, y, w * 5, 100, w, 50);
 		set(con, x, y, w * 6, 100, w, 50);
-		set(dojo, x, y, w * 7, 100, w, 50);
+		set(bgrd, x, y, w * 7, 100, w, 50);
+		set(dojo, x, y, w * 7, 150, w, 50);
 
 		set(mus, x, y, 0, 150, w, 50);
 		set(jm0, x, y, w, 150, w, 50);
 		set(jmh, x, y, w * 2, 150, w, 50);
 		set(jm1, x, y, w * 3, 150, w, 50);
-		set(lt, x, y, 0, 200, 1400, 100);
-		lt.componentResized(x, y);
 	}
 
 	protected void setData(Stage st) {
@@ -180,6 +180,7 @@ class HeadEditTable extends Page {
 		jmax.setText(String.valueOf(st.max));
 		cos.setText(String.valueOf(st.getCont().price + 1));
 		con.setSelected(!st.non_con);
+		bgrd.setSelected(st.bossGuard);
 		dojo.setSelected(st.trail);
 		String str = get(MainLocale.INFO, "star") + ": ";
 		for (int i = 0; i < 4; i++)
@@ -187,8 +188,6 @@ class HeadEditTable extends Page {
 				star[i].setText(i + 1 + str + st.getCont().stars[i] + "%");
 			else
 				star[i].setText(i + 1 + str + "/");
-		Limit lim = st.lim;
-		lt.setLimit(lim);
 		change(false);
 
 		jres.setEnabled(true);
@@ -207,6 +206,7 @@ class HeadEditTable extends Page {
 		jcas.setEnabled(b);
 		jmax.setEnabled(b);
 		con.setEnabled(b);
+		bgrd.setEnabled(b);
 		mus.setEnabled(b);
 		jm0.setEnabled(b);
 		jmh.setEnabled(b);
@@ -215,7 +215,6 @@ class HeadEditTable extends Page {
 		for (JTF jtf : star)
 			jtf.setEnabled(b);
 		cos.setEnabled(b);
-		lt.abler(b);
 	}
 
 	private void addListeners() {
@@ -237,6 +236,11 @@ class HeadEditTable extends Page {
 
 		con.addActionListener(arg0 -> {
 			sta.non_con = !con.isSelected();
+			setData(sta);
+		});
+
+		bgrd.addActionListener(arg0 -> {
+			sta.bossGuard = bgrd.isSelected();
 			setData(sta);
 		});
 
@@ -262,6 +266,7 @@ class HeadEditTable extends Page {
 		add(bg);
 		add(cas);
 		add(con);
+		add(bgrd);
 		add(dojo);
 		add(mus);
 		set(jhea);
@@ -275,7 +280,6 @@ class HeadEditTable extends Page {
 		set(jm0);
 		set(jmh);
 		set(jm1);
-		add(lt);
 		set(res);
 		set(jres);
 		set(cost);
@@ -304,7 +308,7 @@ class HeadEditTable extends Page {
 		}
 		int val = CommonStatic.parseIntN(str);
 		if (jtf == jhea) {
-			if (val <= 0)
+			if (val <= 0 || (sta.trail && val > 100))
 				return;
 			if (!sta.trail)
 				sta.health = val;

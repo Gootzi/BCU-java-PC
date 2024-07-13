@@ -108,7 +108,7 @@ public class UnitListTable extends SortTable<Form> {
 		else if (c == 9)
 			return du.rawAtkData()[0][1];
 		else if (c == 10)
-			return b.t().getFinRes(du.getRespawn());
+			return b.t().getFinRes(du.getRespawn(), false);
 		else if (c == 11)
 			return e.getDefaultPrice(1);
 		else if (c == 12)

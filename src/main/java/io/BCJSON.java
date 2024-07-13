@@ -1,8 +1,5 @@
 package io;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import common.CommonStatic;
 import common.io.assets.AssetLoader;
 import common.io.assets.UpdateCheck;
@@ -13,6 +10,10 @@ import common.util.Data;
 import main.MainBCU;
 import main.Opts;
 import page.LoadPage;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BCJSON {
 
@@ -26,9 +27,9 @@ public class BCJSON {
 		LoadPage.prog("checking update information");
 		UpdateJson json = Data.ignore(UpdateCheck::checkUpdate);
 		List<Downloader> assets = null, musics, libs = null, lang;
-		UpdateJson.JarJson jar = null;
+		UpdateJson.JarJson[] jars = null;
 		try {
-			jar = getLatestJar(json);
+			jars = getLatestJars(json);
 			libs = UpdateCheck.checkPCLibs(json);
 			assets = UpdateCheck.checkAsset(json, "pc");
 		} catch (Exception e) {
@@ -75,10 +76,19 @@ public class BCJSON {
 			if (!Opts.conf("failed to process assets, retry?"))
 				CommonStatic.def.save(false, true);
 
-		if (jar != null) {
-			boolean updateIt = Opts.conf("New jar file update found. " + jar.desc + " Do you want to update jar file?");
+		if (jars != null && jars.length != 0) {
+			StringBuilder sb = new StringBuilder("New jar " + Data.revVer(jars[0].ver) + " is out. Update notes since current jar:\n\n");
+			for (UpdateJson.JarJson info : jars) {
+				sb.append(Data.revVer(info.ver))
+						.append(": ")
+						.append(info.desc)
+						.append("\n");
+			}
+			sb.append("\nDo you want to update jar?");
+			boolean updateIt = Opts.confLong(sb.toString());
 
 			if (updateIt) {
+				UpdateJson.JarJson jar = jars[0];
 				String ver = Data.revVer(jar.ver);
 				File target = new File(CommonStatic.ctx.getBCUFolder(), "./BCU-" + ver + ".jar");
 				File temp = new File(CommonStatic.ctx.getBCUFolder(), "./temp.temp");
@@ -122,6 +132,21 @@ public class BCJSON {
 				load |= l;
 			}
 		return load;
+	}
+
+	private static UpdateJson.JarJson[] getLatestJars(UpdateJson json) {
+		if (json == null)
+			return null;
+
+		List<UpdateJson.JarJson> jars = new ArrayList<>();
+		for (UpdateJson.JarJson jar : json.pc_update) {
+			if (jar == null)
+				continue;
+			if (MainBCU.ver < jar.ver)
+				jars.add(jar);
+		}
+
+		return jars.toArray(new UpdateJson.JarJson[0]);
 	}
 
 	private static UpdateJson.JarJson getLatestJar(UpdateJson json) {

@@ -38,10 +38,9 @@ public class StageTable extends AbJTable {
 	}
 
 	protected Object[][] data;
-
 	private final Page page;
 
-	protected StageTable(Page p) {
+	public StageTable(Page p) {
 		super(title);
 
 		page = p;
@@ -92,7 +91,7 @@ public class StageTable extends AbJTable {
 		return data[r][c];
 	}
 
-	protected void clicked(Point p) {
+	public void clicked(Point p) {
 		if (data == null)
 			return;
 		int c = getColumnModel().getColumnIndexAtX(p.x);
@@ -143,7 +142,7 @@ public class StageTable extends AbJTable {
 		}
 	}
 
-	protected void setData(Stage st) {
+	public void setData(Stage st, int starId) {
 		Line[] info = st.data.getSimple();
 
 		data = new Object[info.length][11];
@@ -154,7 +153,9 @@ public class StageTable extends AbJTable {
 
 			data[ind][0] = info[i].boss == 1 ? "Boss" : info[i].boss == 2 ? "Boss (Shake)" : "";
 
-			data[ind][2] = info[i].multiple == info[i].mult_atk ? info[i].multiple+"" : CommonStatic.toArrayFormat(info[i].multiple, info[i].mult_atk);
+			data[ind][2] = info[i].multiple == info[i].mult_atk
+					? info[i].multiple * st.getCont().stars[starId] / 100 +""
+					: CommonStatic.toArrayFormat(info[i].multiple * st.getCont().stars[starId] / 100, info[i].mult_atk * st.getCont().stars[starId] / 100);
 
 			data[ind][3] = info[i].number == 0 ? "Infinite" : info[i].number;
 

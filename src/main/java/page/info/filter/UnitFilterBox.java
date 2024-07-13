@@ -90,12 +90,54 @@ public abstract class UnitFilterBox extends Page {
 		return forms;
 	}
 
+	protected List<Form> filterNameDynamic() {
+
+		if(name.isEmpty())
+			return form;
+
+		int nlen = name.length();
+		int toll = MainBCU.dynamicTolerance[Math.min(MainBCU.dynamicTolerance.length-1, nlen)];
+
+		String lowName = name.toLowerCase();
+		String headFname;
+
+		List<Form> forms = new ArrayList<>();
+		for (Form e : form) {
+			String fname = MultiLangCont.getStatic().FNAME.getCont(e);
+			if (fname == null)
+				fname = e.names.toString();
+			if (fname == "")
+				continue;
+			fname = fname.toLowerCase();
+
+			switch (nlen) {
+				case 1:
+					if(fname.startsWith(lowName) || fname.contains(" " + lowName))
+						forms.add(e);
+					break;
+				case 2:
+				case 3:
+					if(fname.startsWith(lowName) || fname.contains(" " + lowName) || fname.contains(lowName + " ") || fname.endsWith(lowName))
+						forms.add(e);
+					break;
+				default:
+					headFname = fname.substring(0, Math.min(fname.length(), nlen + toll));
+					if( (fname.charAt(0) == lowName.charAt(0) && (UtilPC.damerauLevenshteinDistance(headFname, lowName) <= 2 * toll)) || fname.contains(lowName))
+						forms.add(e);
+					break;
+			}
+		}
+		return forms;
+	}
+
 	/**
 		0 - filter both type and name
 	 	1 - only filter by name
 	 */
 	protected void confirm(int type) {
-		getFront().callBack(type == 0 ? filterType() : type == 1 ? filterName() : null);
+		getFront().callBack(type == 0 ? filterType()
+				: type == 1 ? (MainBCU.useDynamic ? filterNameDynamic() : filterName())
+				: null);
 	}
 }
 
@@ -208,7 +250,7 @@ class UFBButton extends UnitFilterBox {
 					if (b0 & b1 & b2 & b3 & b4)
 						form.add(f);
 				}
-		return filterName();
+		return MainBCU.useDynamic ? filterNameDynamic() : filterName();
 	}
 
 	private void ini() {
@@ -374,7 +416,7 @@ class UFBList extends UnitFilterBox {
 				}
 		}
 
-		return filterName();
+		return MainBCU.useDynamic ? filterNameDynamic() : filterName();
 	}
 
 	@Override

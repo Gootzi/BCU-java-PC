@@ -12,8 +12,11 @@ import page.Page;
 import page.basis.BasisPage;
 import page.basis.LineUpBox;
 import page.basis.LubCont;
+import page.basis.ModifierList;
+import page.info.StageTable;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 public class BattleSetupPage extends LubCont {
@@ -32,6 +35,11 @@ public class BattleSetupPage extends LubCont {
 	private final JLabel jl = new JLabel();
 	private final JBTN jlu = new JBTN(0, "line");
 	private final LineUpBox lub = new LineUpBox(this);
+	private final ModifierList mod = new ModifierList();
+	private final JScrollPane jmod = new JScrollPane(mod);
+
+	private final StageTable sttb;
+	private final JScrollPane jstt;
 
 	private final Stage st;
 
@@ -39,9 +47,13 @@ public class BattleSetupPage extends LubCont {
 
 	public BattleSetupPage(Page p, Stage s, int confs) {
 		super(p);
+		sttb = new StageTable(this);
+		jstt = new JScrollPane(sttb);
 		st = s;
 		conf = confs;
+
 		ini();
+		renew();
 	}
 
 	@Override
@@ -63,6 +75,9 @@ public class BattleSetupPage extends LubCont {
 		else
 			tmax.setEnabled(false);
 		lub.setLU(b.sele.lu);
+		mod.setBasis(BasisSet.current());
+		mod.setComboList(BasisSet.current().sele.lu.coms);
+		mod.setBanned(st.getCont().stageLimit != null ? st.getCont().stageLimit.bannedCatCombo : null);
 	}
 
 	@Override
@@ -78,8 +93,22 @@ public class BattleSetupPage extends LubCont {
 		set(snip, x, y, 300, 200, 200, 50);
 		set(tmax, x, y, 300, 500, 200, 50);
 		set(lub, x, y, 550, 50, 600, 300);
+		set(jmod, x, y, 550, 350, 600, 200);
 		set(plus, x, y, 1200, 100, 200, 50);
 		set(lvlim, x, y, 1200, 200, 200, 50);
+		set(jstt, x, y, 50, 600, 1400, 650);
+		sttb.setRowHeight(size(x, y, 50));
+	}
+
+	@Override
+	public void callBack(Object newParam) {
+		renew();
+	}
+
+	@Override
+	protected void mouseClicked(MouseEvent e) {
+		if (e.getSource() == sttb)
+			sttb.clicked(e.getPoint());
 	}
 
 	private void addListeners() {
@@ -91,9 +120,10 @@ public class BattleSetupPage extends LubCont {
 			if (jls.getSelectedIndex() == -1)
 				jls.setSelectedIndex(0);
 			lub.setLimit(st.getLim(jls.getSelectedIndex()), st.getCont().price);
+			sttb.setData(st, jls.getSelectedIndex());
 		});
 
-		jlu.addActionListener(arg0 -> changePanel(new BasisPage(getThis(), st.getLim(conf == 1 ? jls.getSelectedIndex() : -1), st.getCont().price)));
+		jlu.addActionListener(arg0 -> changePanel(new BasisPage(getThis(), st, conf == 1 ? jls.getSelectedIndex() : -1, st.getCont().price)));
 
 		strt.addActionListener(arg0 -> {
 			int star = jls.getSelectedIndex();
@@ -134,6 +164,9 @@ public class BattleSetupPage extends LubCont {
 		add(snip);
 		add(tmax);
 		add(lub);
+		add(jstt);
+		add(jmod);
+		sttb.setData(st, 0);
 		if(st.isAkuStage()) {
 			add(plus);
 			add(lvlim);

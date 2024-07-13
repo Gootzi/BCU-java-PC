@@ -294,4 +294,8 @@ public class LineUpBox extends Canvas {
 		return ans;
 	}
 
+	public LineUp getLU() {
+		return lu;
+	}
+
 }
