@@ -76,7 +76,7 @@ public class ConfigPage extends Page {
 	private final JSlider jsse = new JSlider(0, 100);
 	private final JSlider jsui = new JSlider(0, 100);
 	private final JSlider jsba = new JSlider(0, 50);
-	private final JList<CommonStatic.Lang.Locale> jls = new JList<>(CommonStatic.Lang.Locale.values());
+	private final JList<CommonStatic.Lang.Locale> jls = new JList<>(CommonStatic.Lang.Locale.values()); // TODO: render lang names, deal with RU and TH
 	private final JBTN row = new JBTN(MainLocale.PAGE, CommonStatic.getConfig().twoRow ? "tworow" : "onerow");
 	private final JBTN vcol = new JBTN(MainLocale.PAGE, "viewcolor");
 	private final JBTN vres = new JBTN(MainLocale.PAGE, "viewreset");
