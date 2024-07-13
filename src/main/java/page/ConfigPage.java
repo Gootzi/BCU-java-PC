@@ -13,6 +13,7 @@ import main.Opts;
 import main.Timer;
 import page.support.ColorPicker;
 import page.view.ViewBox;
+import utilpc.Interpret;
 import utilpc.Theme;
 
 import javax.swing.*;
@@ -76,7 +77,7 @@ public class ConfigPage extends Page {
 	private final JSlider jsse = new JSlider(0, 100);
 	private final JSlider jsui = new JSlider(0, 100);
 	private final JSlider jsba = new JSlider(0, 50);
-	private final JList<CommonStatic.Lang.Locale> jls = new JList<>(CommonStatic.Lang.Locale.values()); // TODO: render lang names, deal with RU and TH
+	private final JList<CommonStatic.Lang.Locale> jls = new JList<>(Interpret.getLocales()); // TODO: reorderlist for custom priority
 	private final JBTN row = new JBTN(MainLocale.PAGE, CommonStatic.getConfig().twoRow ? "tworow" : "onerow");
 	private final JBTN vcol = new JBTN(MainLocale.PAGE, "viewcolor");
 	private final JBTN vres = new JBTN(MainLocale.PAGE, "viewreset");
@@ -534,6 +535,14 @@ public class ConfigPage extends Page {
 		reallv.setToolTipText(get(MainLocale.PAGE, "reallvtip"));
 		dyna.setSelected(MainBCU.useDynamic);
 		tole.setEnabled(!MainBCU.useDynamic);
+		jls.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList<?> l, Object o, int ind, boolean s, boolean f) {
+				JLabel jl = (JLabel) super.getListCellRendererComponent(l, o, ind, s, f);
+				jl.setText(MainLocale.LOC_NAME[((CommonStatic.Lang.Locale) o).ordinal()]);
+				return jl;
+			}
+		});
 		addListeners();
 	}
 

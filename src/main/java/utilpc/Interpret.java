@@ -32,10 +32,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class Interpret extends Data {
 
@@ -1173,5 +1171,13 @@ public class Interpret extends Data {
         }
 
         ans.append("</table>");
+    }
+
+    public static Vector<CommonStatic.Lang.Locale> getLocales() {
+        Vector<CommonStatic.Lang.Locale> locales = new Vector<>();
+        for (CommonStatic.Lang.Locale l : CommonStatic.Lang.Locale.values())
+            if (l != CommonStatic.Lang.Locale.RU && l != CommonStatic.Lang.Locale.TH)
+                locales.add(l);
+        return locales;
     }
 }
