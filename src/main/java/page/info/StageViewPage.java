@@ -5,13 +5,11 @@ import common.util.stage.RandStage;
 import common.util.stage.Stage;
 import common.util.stage.StageMap;
 import main.MainBCU;
-import main.Opts;
 import page.JBTN;
 import page.JTF;
 import page.Page;
 import page.battle.BattleSetupPage;
 import page.battle.StRecdPage;
-import utilpc.Interpret;
 import utilpc.UtilPC;
 
 import javax.swing.*;
@@ -43,7 +41,6 @@ public class StageViewPage extends StagePage {
 	private final JBTN srch = new JBTN(0, "asrch");
 
 	private final JBTN recd = new JBTN(0, "replay");
-	private final JBTN info = new JBTN(0, "info");
 
 	private final JTF smnm = new JTF();
 	private final JTF snam = new JTF();
@@ -83,7 +80,6 @@ public class StageViewPage extends StagePage {
 		set(strt, x, y, 400, 0, 200, 50);
 		set(srch, x, y, 200, 0, 200, 50);
 
-		set(info, x, y, 1600, 350, 200, 50);
 		set(recd, x, y, 1850, 350, 200, 50);
 	}
 
@@ -102,15 +98,6 @@ public class StageViewPage extends StagePage {
 	}
 
 	private void addListeners() {
-
-		info.setLnr(x -> {
-			if (stage == null)
-				return;
-			if (stage.info != null)
-				Opts.pop(Interpret.readHTML(stage.info), "stage info");
-			else
-				Opts.pop(Interpret.readHTMLStage(stage, false), "stage info");
-		});
 
 		recd.setLnr(x -> changePanel(new StRecdPage(this, stage, false)));
 
@@ -238,7 +225,6 @@ public class StageViewPage extends StagePage {
 		add(cpsm);
 		add(cpst);
 		add(dgen);
-		add(info);
 		add(srch);
 		add(smnm);
 		add(snam);

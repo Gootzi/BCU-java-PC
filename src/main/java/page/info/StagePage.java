@@ -1,9 +1,11 @@
 package page.info;
 
 import common.util.stage.Stage;
+import main.Opts;
 import page.JBTN;
 import page.Page;
 import page.battle.BattleSetupPage;
+import utilpc.Interpret;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +22,8 @@ public class StagePage extends Page {
 	private final JScrollPane jspjt = new JScrollPane(jt);
 	private final HeadTable info = new HeadTable(this);
 	private final JScrollPane jspinfo = new JScrollPane(info);
+
+	private final JBTN infb = new JBTN(0, "info");
 
 	protected Stage stage;
 
@@ -52,6 +56,7 @@ public class StagePage extends Page {
 		set(back, x, y, 0, 0, 200, 50);
 		set(jspinfo, x, y, 800, 50, 1400, 300);
 		set(jspjt, x, y, 800, 400, 1400, 800);
+		set(infb, x, y, 1600, 350, 200, 50);
 		jt.setRowHeight(size(x, y, 50));
 		info.setRowHeight(size(x, y, 50));
 	}
@@ -69,6 +74,15 @@ public class StagePage extends Page {
 	private void addListeners() {
 		back.addActionListener(arg0 -> changePanel(getFront()));
 
+		infb.setLnr(x -> {
+			if (stage == null)
+				return;
+			if (stage.info != null)
+				Opts.pop(Interpret.readHTML(stage.info), "stage info");
+			else
+				Opts.pop(Interpret.readHTMLStage(stage, false), "stage info");
+		});
+
 		strt.addActionListener(arg0 -> {
 			if (stage == null)
 				return;
@@ -82,6 +96,7 @@ public class StagePage extends Page {
 		add(jspjt);
 		add(jspinfo);
 		add(strt);
+		add(infb);
 		strt.setEnabled(false);
 		info.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
