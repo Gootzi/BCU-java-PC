@@ -1180,4 +1180,37 @@ public class Interpret extends Data {
                 locales.add(l);
         return locales;
     }
+
+    public static String readMaterialData(DefStageInfo data) {
+        StringBuilder ans = new StringBuilder("<html>Material Drop Data<br><br>");
+
+        ans.append(Page.get(MainLocale.PAGE, "maxmat")).append("<br>");
+        for (int i = 0; i < data.map.multiplier.length; i++) {
+            ans.append(i + 1).append(" ").append(Page.get(MainLocale.INFO, "star")).append(": ")
+                    .append((int) (data.map.multiplier[i] * data.maxMaterial))
+                    .append("<br>");
+        }
+
+        ans.append("<br><table><tr><th>")
+                .append(Page.get(MainLocale.INFO, "mat"))
+                .append("</th><th>")
+                .append(Page.get(MainLocale.INFO, "chance"))
+                .append("</th></tr>");
+
+        for (int i = 0 ; i < data.map.materialDrop.length; i++) {
+            int chance = data.map.materialDrop[i];
+            if (data.map.materialDrop[i] == 0)
+                continue;
+
+            ans.append("<tr><td>")
+                    .append(Page.get(MainLocale.UTIL, "m" + i))
+                    .append("</td><td>")
+                    .append(chance).append("%")
+                    .append("</td></tr>");
+        }
+
+        ans.append("</table></html>");
+
+        return ans.toString();
+    }
 }
