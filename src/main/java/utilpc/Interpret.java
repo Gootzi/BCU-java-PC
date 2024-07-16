@@ -1197,15 +1197,17 @@ public class Interpret extends Data {
                 .append(Page.get(MainLocale.INFO, "chance"))
                 .append("</th></tr>");
 
-        for (int i = 0 ; i < data.map.materialDrop.length; i++) {
+        int missChance = data.map.materialDrop[0];
+        int totalChances = Arrays.stream(data.map.materialDrop).reduce(0, Integer::sum) - missChance;
+        for (int i = 1 ; i < data.map.materialDrop.length; i++) {
             int chance = data.map.materialDrop[i];
             if (data.map.materialDrop[i] == 0)
                 continue;
 
             ans.append("<tr><td>")
-                    .append(Page.get(MainLocale.UTIL, "m" + i))
+                    .append(Page.get(MainLocale.UTIL, "m" + (i - 1)))
                     .append("</td><td>")
-                    .append(chance).append("%")
+                    .append((double) (((100 - missChance) * chance * 100) / totalChances) / 100.0).append("%")
                     .append("</td></tr>");
         }
 
