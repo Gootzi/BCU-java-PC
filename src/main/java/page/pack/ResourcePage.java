@@ -6,6 +6,7 @@ import common.system.files.VFileRoot;
 import io.BCUWriter;
 import page.JBTN;
 import page.JL;
+import page.JTG;
 import page.Page;
 import page.support.Exporter;
 import utilpc.UtilPC;
@@ -14,7 +15,9 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Queue;
 
 public class ResourcePage extends Page {
 
@@ -23,11 +26,12 @@ public class ResourcePage extends Page {
 	private final JBTN back = new JBTN(0, "back");
 	private final JBTN rept = new JBTN(0, "extract");
 	private final JLabel jln = new JLabel();
-	private final JTextArea jt = new JTextArea();
+	private final JTextPane jt = new JTextPane();
 	private final JTree jls = new JTree();
 	private final JScrollPane jsps = new JScrollPane(jls);
 	private final JScrollPane jspf = new JScrollPane(jt);
 	private final JScrollPane jspi = new JScrollPane(jln);
+	private final JTG tabl = new JTG(0, "table");
 
 	private final JL assetsLabel = new JL("assets");
 	private final JL contentLabel = new JL("content");
@@ -54,12 +58,23 @@ public class ResourcePage extends Page {
 		set(back, x, y, 0, 0, 200, 50);
 		set(jsps, x, y, 50, 150, 400, 800);
 		set(jspf, x, y, 450, 150, 700, 800);
-		set(jspi, x, y, 1150, 150, 700, 800);
+		set(tabl, x, y, 450, 950, 200, 50);
 		set(rept, x, y, 50, 950, 400, 50);
 
 		set(assetsLabel, x, y, 50, 100, 400, 50);
-		set(contentLabel, x, y, 450, 100, 700, 50);
-		set(imageLabel, x, y, 1150, 100, 700, 50);
+
+		if (sel != null && sel.getName().endsWith(".png")) {
+			set(contentLabel, x, y, 450, 100, 0, 0);
+			set(jspf, x, y, 450, 150, 0, 0);
+			set(imageLabel, x, y, 450, 100, 1400, 50);
+			set(jspi, x, y, 450, 150, 1400, 800);
+		} else {
+			set(contentLabel, x, y, 450, 100, 1400, 50);
+			set(jspf, x, y, 450, 150, 1400, 800);
+			set(imageLabel, x, y, 450, 100, 0, 0);
+			set(jspi, x, y, 450, 150, 0, 0);
+		}
+
 	}
 
 	private void addListeners() {
@@ -75,7 +90,8 @@ public class ResourcePage extends Page {
 		jls.addTreeSelectionListener(arg0 -> {
 			if (changing)
 				return;
-			Object obj = null;
+			changing = true;
+			Object obj;
 			TreePath tp = jls.getSelectionPath();
 			if (tp != null) {
 				obj = tp.getLastPathComponent();
@@ -91,18 +107,43 @@ public class ResourcePage extends Page {
 					jt.setText(null);
 				} else {
 					jln.setIcon(null);
-					StringBuilder txt = new StringBuilder();
-					for (String str : sel.getData().readLine())
-						txt.append(str).append("\n");
-					jt.setText(txt.toString());
+					renderText(null);
 				}
 			} else {
 				jln.setIcon(null);
 				jt.setText(null);
 			}
 			setSele();
+			changing = false;
 		});
 
+		tabl.setLnr(this::renderText);
+	}
+
+	private void renderText(ActionEvent e) {
+		if (sel == null)
+			return;
+		if (tabl.isSelected()) {
+			StringBuilder txt = new StringBuilder("<html><table><tr>");
+			Queue<String> queue = sel.getData().readLine();
+
+			for (String header : queue.poll().split(", *"))
+				txt.append("<th>").append(header).append("</th>");
+			txt.append("</tr><tr>");
+
+			for (String str : queue) {
+				txt.append("<tr><td>")
+						.append(String.join("</td><td>", str.split(", *")))
+						.append("</td></tr>");
+			}
+
+			jt.setText(txt.append("</table></html>").toString());
+		} else {
+			StringBuilder txt = new StringBuilder();
+			for (String str : sel.getData().readLine())
+				txt.append(str).append("\n");
+			jt.setText(txt.toString());
+		}
 	}
 
 	private void addTree(DefaultMutableTreeNode par, VFile vf) {
@@ -125,21 +166,26 @@ public class ResourcePage extends Page {
 	private void ini() {
 		jln.setVerticalAlignment(SwingConstants.TOP);
 		jt.setEditable(false);
+		tabl.setEnabled(false);
 		add(back);
 		add(jsps);
 		add(jspf);
 		add(jspi);
 		add(rept);
+		add(tabl);
 		add(assetsLabel);
 		add(contentLabel);
 		add(imageLabel);
 		setSele();
 		setTree(VFile.getBCFileTree());
 		addListeners();
+		jt.setContentType("text/html");
 	}
 
 	private void setSele() {
 		rept.setEnabled(sel != null);
+		tabl.setEnabled(sel != null && sel.getName().endsWith(".csv"));
+		fireDimensionChanged();
 	}
 
 	private void setTree(VFileRoot vfr) {
