@@ -75,6 +75,9 @@ public class ResourcePage extends Page {
 			set(jspi, x, y, 450, 150, 0, 0);
 		}
 
+		jspf.getHorizontalScrollBar().setUnitIncrement(size(x, y, 15));
+		jspi.getHorizontalScrollBar().setUnitIncrement(size(x, y, 20));
+		jspi.getVerticalScrollBar().setUnitIncrement(size(x, y, 20));
 	}
 
 	private void addListeners() {
@@ -123,7 +126,7 @@ public class ResourcePage extends Page {
 	private void renderText(ActionEvent e) {
 		if (sel == null)
 			return;
-		if (tabl.isSelected()) {
+		if (tabl.isSelected()) { // todo: make table reading better
 			StringBuilder txt = new StringBuilder("<html><table><tr>");
 			Queue<String> queue = sel.getData().readLine();
 
