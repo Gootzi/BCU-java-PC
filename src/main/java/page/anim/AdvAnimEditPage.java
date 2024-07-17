@@ -306,7 +306,7 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 			System.out.println(str);// TODO
 		});
 
-		revt.setLnr(x -> {
+		revt.setLnr(x -> { // todo: see if i can optimize my fuckass code
 			MaAnim anim = maet.ma;
 			if (anim == null)
 				return;
@@ -317,9 +317,8 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 				Part[] data = anim.parts;
 				anim.parts = new Part[++anim.n];
 				System.arraycopy(data, 0, anim.parts, 0, data.length);
-				Part newScalePart = new Part();
+				Part newScalePart = new Part(0, 9);
 				newScalePart.validate();
-				newScalePart.ints[1] = 9;
 				newScalePart.moves = new int[++newScalePart.n][];
 				newScalePart.moves[0] = new int[] { 0, -1000, 0, 0 };
 				newScalePart.validate();
@@ -341,10 +340,8 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 					Part[] data = anim.parts; // copy parts
 					anim.parts = new Part[++anim.n]; // add slot for new part
 					System.arraycopy(data, 0, anim.parts, 0, data.length); // preserve parts
-					Part newPart = new Part(); // create part
+					Part newPart = new Part(partID, 11); // create part
 					newPart.validate(); // validate
-					newPart.ints[0] = partID;
-					newPart.ints[1] = 11; // set type to angle
 					newPart.moves = new int[++newPart.n][]; // add slot for new move
 					newPart.moves[0] = new int[] { 0, angle * -2, 0, 0 }; // set angle to negative ma_model angle
 					newPart.validate(); // validate part
