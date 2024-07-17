@@ -50,9 +50,11 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 	private final JBTN sort = new JBTN(0, "sort");
 	private final JBTN keep = new JBTN(0, "keep");// TODO
 	private final JBTN appl = new JBTN(0, "apply");// TODO
-	private final JBTN show = new JBTN(0, "show");// TODO
+	private final JBTN show = new JBTN(0, "showa");// TODO
 	private final JBTN time = new JBTN(0, "time");// TODO
 	private final JBTN revt = new JBTN(0, "revt");
+	private final JBTN conn = new JBTN(0, "newscale");
+	private final JBTN cono = new JBTN(0, "oldscale");
 	private final JL lkip = new JL();
 	private final JL inft = new JL();
 	private final JL inff = new JL();
@@ -197,10 +199,15 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 		set(clea, x, y, 1300, 150, 200, 50);
 		set(time, x, y, 1300, 200, 200, 50);
 		set(revt, x, y, 1300, 250, 200, 50);
+
 		set(lkip, x, y, 1500, 50, 200, 50);
 		set(keep, x, y, 1500, 100, 200, 50);
 		set(appl, x, y, 1500, 150, 200, 50);
 		set(show, x, y, 1500, 200, 200, 50);
+
+		set(conn, x, y, 1750, 50, 200, 50);
+		set(cono, x, y, 1750, 100, 200, 50);
+
 
 		maet.setRowHeight(size(x, y, 50));
 		mpet.setRowHeight(size(x, y, 50));
@@ -300,7 +307,7 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 		});
 
 		revt.setLnr(x -> {
-			MaAnim anim = ac.getMaAnim(animID);
+			MaAnim anim = maet.ma;
 			if (anim == null)
 				return;
 			if (Arrays.stream(anim.parts).anyMatch(p -> p.ints[0] == 0 && p.ints[1] == 9)) {
@@ -348,6 +355,24 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 			maet.anim.unSave("maanim revert");
 			callBack(null);
 		});
+
+		conn.setLnr(x -> {
+			for (Part p : maet.ma.parts) {
+				if (p.ints[1] == 53)
+					p.ints[1] = 8;
+			}
+			maet.anim.unSave("maanim new scale (53 -> 8)");
+			callBack(null);
+		});
+
+		cono.setLnr(x -> {
+			for (Part p : maet.ma.parts) {
+				if (p.ints[1] == 8)
+					p.ints[1] = 53;
+			}
+			maet.anim.unSave("maanim old scale (8 -> 53)");
+			callBack(null);
+		});
 	}
 
 	private void addListeners$5() {
@@ -355,6 +380,8 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 		keep.setLnr(x -> {
 			keeps = maet.getSelected();
 			lkip.setText("keep " + keeps.length + " item");
+			show.setEnabled(keeps.length != 0);
+			appl.setEnabled(keeps.length != 0);
 		});
 
 		show.setLnr(x -> change(0, z -> {
@@ -390,7 +417,6 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 						pi.validate();
 					}
 		});
-
 	}
 
 	private void addLnr$Anim() {
@@ -640,6 +666,8 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 		add(lkip);
 		add(time);
 		add(revt);
+		add(conn);
+		add(cono);
 		setA();
 
 		addListeners$0();
@@ -648,6 +676,9 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 		addLnr$Anim();
 		addListeners$4();
 		addListeners$5();
+
+		show.setEnabled(false);
+		appl.setEnabled(false);
 	}
 
 	private void setA() {

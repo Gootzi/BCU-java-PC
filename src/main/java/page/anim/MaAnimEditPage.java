@@ -627,6 +627,8 @@ public class MaAnimEditPage extends Page implements AbEditPage {
 		addl.setEnabled(false);
 		reml.setEnabled(false);
 		jtl.setEnabled(false);
+		advs.setEnabled(false);
+		sort.setEnabled(false);
 		jtl.setPaintTicks(true);
 		jtl.setPaintLabels(true);
 		addListeners();
