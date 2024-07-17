@@ -20,6 +20,7 @@ import page.support.EnemyTCR;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,13 @@ public class StageTable extends AbJTable {
 		page = p;
 
 		setDefaultRenderer(Enemy.class, new EnemyTCR());
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				super.mouseMoved(e);
+				hover(e.getPoint());
+			}
+		});
 	}
 
 	@Override
@@ -91,15 +99,24 @@ public class StageTable extends AbJTable {
 		return data[r][c];
 	}
 
+	public synchronized void hover(Point p) {
+		if (data == null)
+			return;
+		int c = getColumnModel().getColumnIndexAtX(p.x);
+		c = lnk[c];
+		int r = p.y / getRowHeight();
+		if (r < 0 || r >= data.length || c != 1)
+			setCursor(Cursor.getDefaultCursor());
+		else
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	}
+
 	public void clicked(Point p) {
 		if (data == null)
 			return;
 		int c = getColumnModel().getColumnIndexAtX(p.x);
-
 		c = lnk[c];
-
 		int r = p.y / getRowHeight();
-
 		if (r < 0 || r >= data.length || c != 1)
 			return;
 
@@ -153,7 +170,7 @@ public class StageTable extends AbJTable {
 
 			data[ind][0] = info[i].boss == 1 ? "Boss" : info[i].boss == 2 ? "Boss (Shake)" : "";
 
-			data[ind][2] = info[i].multiple == info[i].mult_atk
+			data[ind][2] = info[i].multiple == 0 && info[i].mult_atk == 0 ? st.getCont().stars[starId] : info[i].multiple == info[i].mult_atk
 					? info[i].multiple * st.getCont().stars[starId] / 100 +""
 					: CommonStatic.toArrayFormat(info[i].multiple * st.getCont().stars[starId] / 100, info[i].mult_atk * st.getCont().stars[starId] / 100);
 
