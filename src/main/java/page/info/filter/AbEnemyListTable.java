@@ -41,14 +41,14 @@ public class AbEnemyListTable  extends SortTable<AbEnemy> {
 
         page = p;
 
-        setDefaultRenderer(Enemy.class, new EnemyTCR());
+        setDefaultRenderer(AbEnemy.class, new EnemyTCR());
     }
 
     @Override
     public Class<?> getColumnClass(int c) {
         c = lnk[c];
         if (c == 1)
-            return Enemy.class;
+            return AbEnemy.class;
         return String.class;
     }
 
