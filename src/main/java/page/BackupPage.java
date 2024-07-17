@@ -430,7 +430,7 @@ public class BackupPage extends Page {
         MaAnim ma = null;
 
         try {
-            ma = new MaAnim(qs);
+            ma = new MaAnim(qs, false);
         } catch (Exception ignored) {
 
         }
