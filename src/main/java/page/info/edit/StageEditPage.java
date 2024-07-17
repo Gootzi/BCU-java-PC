@@ -377,8 +377,8 @@ public class StageEditPage extends Page {
 			ptst.setEnabled(false);
 		else {
 			Set<String> set = st.isSuitable(pack);
-			ptst.setEnabled(set.size() == 0);
-			if (set.size() > 0)
+			ptst.setEnabled(set.isEmpty());
+			if (!set.isEmpty())
 				ptst.setToolTipText("requires: " + set);
 		}
 		rmst.setEnabled(st != null);
