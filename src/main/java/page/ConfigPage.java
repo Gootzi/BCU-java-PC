@@ -3,6 +3,7 @@ package page;
 import common.CommonStatic;
 import common.CommonStatic.Config;
 import common.io.Backup;
+import common.io.assets.AssetLoader;
 import common.pack.UserProfile;
 import common.util.ImgCore;
 import common.util.lang.MultiLangCont;
@@ -87,6 +88,8 @@ public class ConfigPage extends Page {
 	private final JTF tole = new JTF(String.valueOf(MainBCU.searchTolerance));
 	private final JTG dyna = new JTG(MainLocale.PAGE, "dynamic");
 	private final JCB reallv = new JCB(MainLocale.PAGE, "reallv");
+
+	private final JL comv = new JL(Page.get(MainLocale.PAGE, "CORE Ver: ") + AssetLoader.CORE_VER);
 
 	private final JScrollPane jsps = new JScrollPane(jls);
 
@@ -188,6 +191,8 @@ public class ConfigPage extends Page {
 		set(exla, x, y, 1750, 475, 300, 50);
 		set(extt, x, y, 1750, 550, 300, 50);
 		set(rlla, x, y, 1750, 625, 300, 50);
+
+		set(comv, x, y, 1950, 1200, 300, 50);
 	}
 
 	@Override
@@ -425,6 +430,7 @@ public class ConfigPage extends Page {
 
 	private void ini() {
 		add(back);
+		add(comv);
 		add(jogl);
 		add(prel);
 		add(refe);
@@ -543,6 +549,7 @@ public class ConfigPage extends Page {
 				return jl;
 			}
 		});
+		comv.setBorder(null);
 		addListeners();
 	}
 

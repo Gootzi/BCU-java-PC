@@ -67,30 +67,6 @@ public class PackEditPage extends Page {
 	private final JList<UserPack> jlt = new JList<>(vpack);
 	private final JScrollPane jspt = new JScrollPane(jlt);
 
-	/*private final JBTN addp = new JBTN(0, "add");
-	private final JBTN remp = new JBTN(0, "rem");
-	private final JBTN adde = new JBTN(0, "add");
-	private final JBTN reme = new JBTN(0, "rem");
-	private final JBTN erea = new JBTN(0, "reassign");
-	private final JBTN adds = new JBTN(0, "add");
-	private final JBTN rems = new JBTN(0, "rem");
-	private final JBTN addr = new JBTN(0, "add");
-	private final JBTN remr = new JBTN(0, "rem");
-	private final JBTN edit = new JBTN(0, "edit");
-	private final JBTN sdiy = new JBTN(0, "sdiy");
-	private final JBTN vene = new JBTN(0, "vene");
-	private final JBTN extr = new JBTN(0, "extr");
-	private final JBTN vcas = new JBTN(0, "vcas");
-	private final JBTN vbgr = new JBTN(0, "vbgr");
-	private final JBTN vrcg = new JBTN(0, "recg");
-	private final JBTN vrlr = new JBTN(0, "relr");
-	private final JBTN cunt = new JBTN(0, "cunt");
-	private final JBTN tdiy = new JBTN(0, "ctrt");
-	private final JBTN ener = new JBTN(0, "ener");
-	private final JBTN vmsc = new JBTN(0, "cmsc");
-	private final JBTN unpk = new JBTN(0, "unpack");
-	private final JBTN recd = new JBTN(0, "replay");
-	*/
 	private final JBTN addp = new JBTN(MainLocale.PAGE, "add");
 	private final JBTN remp = new JBTN(MainLocale.PAGE, "rem");
 	private final JBTN adde = new JBTN(MainLocale.PAGE, "add");
@@ -129,6 +105,7 @@ public class PackEditPage extends Page {
 	private final JL lbt = new JL(0, "selepar");
 	private final JLabel pid = new JLabel();
 	private final JLabel pauth = new JLabel();
+	private final JLabel pcore = new JLabel();
 	private final JLabel animall = new JLabel();
 
 	private UserPack pac;
@@ -171,7 +148,8 @@ public class PackEditPage extends Page {
 		set(unpk, x, y, w + 200, 950, 200, 50);
 		set(pid, x, y, w, 1050, 400, 50);
 		set(pauth, x, y, w, 1100, 400, 50);
-		set(animall, x, y, w, 1150, 400, 50);
+		set(pcore, x, y, w, 1150, 400, 50);
+		set(animall, x, y, w, 1200, 400, 50);
 		set(cmbo, x, y, w, 1000, 400, 50);
 		set(vali, x, y, w, 750, 400, 50);
 
@@ -699,6 +677,7 @@ public class PackEditPage extends Page {
 
 		add(pid);
 		add(pauth);
+		add(pcore);
 		add(animall);
 		jle.setCellRenderer(new AnimLCR());
 		jtd.setCellRenderer(new AnimTreeRenderer());
@@ -811,10 +790,11 @@ public class PackEditPage extends Page {
 		setEnemy(null);
 		pid.setVisible(pack != null);
 		pauth.setVisible(pack != null);
-		animall.setVisible(pack == null || !pack.editable);
+		animall.setVisible(pack != null);
 
 		if(pack != null) {
 			pid.setText("ID : "+pack.desc.id);
+			pcore.setText("CORE Ver : " + pack.desc.BCU_VERSION);
 			if(pack.desc.author == null || pack.desc.author.isEmpty()) {
 				pauth.setText("Author : (None)");
 			} else {
