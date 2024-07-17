@@ -1,6 +1,7 @@
 package page.info;
 
 import common.util.stage.*;
+import common.util.unit.Enemy;
 import main.MainBCU;
 import org.jetbrains.annotations.NotNull;
 import page.MainFrame;
@@ -72,7 +73,7 @@ public class HeadTable extends AbJTable {
 		return data[r][c];
 	}
 
-	protected void hover(Point p) {
+	protected synchronized void hover(Point p) {
 		if (data == null)
 			return;
 		int c = getColumnModel().getColumnIndexAtX(p.x);
@@ -120,7 +121,7 @@ public class HeadTable extends AbJTable {
 			MainFrame.changePanel(new CharaGroupPage(page, (CharaGroup) data[r][c]));
 	}
 
-	protected void setData(Stage st) {
+	protected void setData(Stage st, int star) {
 		sta = st;
 		Object[][] lstr = new Object[6][8];
 		Object[] tit, bas, bas2, img, rar, reg;
@@ -132,9 +133,9 @@ public class HeadTable extends AbJTable {
 		reg = lstr[5];
 		tit[0] = "ID:";
 		tit[1] = st.getCont().id + "-" + st.id();
-		String star = Page.get(MainLocale.INFO, "star");
+		String starStr = Page.get(MainLocale.INFO, "star");
 		for (int i = 0; i < st.getCont().stars.length; i++)
-			tit[2 + i] = (i + 1) + star + ": " + st.getCont().stars[i] + "%";
+			tit[2 + i] = (i + 1) + starStr + ": " + st.getCont().stars[i] + "%";
 		tit[6] = Page.get(MainLocale.INFO, "chcos");
 		tit[7] = st.getCont().price + 1;
 		if (st.timeLimit != 0) {
@@ -142,7 +143,13 @@ public class HeadTable extends AbJTable {
 			bas[1] = st.timeLimit +" min";
 		} else {
 			bas[0] = infs[0];
-			bas[1] = st.health;
+			SCDef.Line[] lines = st.data.getSimple();
+			if (st.getCont().getCont().getSID().equals("000003"))
+				bas[1] = st.health * (star + 1);
+			else if (lines.length != 0 && lines[lines.length - 1].castle_0 == 0 && lines[lines.length - 1].enemy != null && lines[lines.length - 1].enemy.cls == Enemy.class)
+				bas[1] = ((Enemy) lines[lines.length - 1].enemy.get()).de.getHp() * lines[lines.length - 1].multiple / 100 * st.getCont().stars[star] / 100;
+			else
+				bas[1] = st.health;
 		}
 		bas[2] = infs[1] + ": " + st.len;
 		bas[3] = infs[2] + ": " + st.max;

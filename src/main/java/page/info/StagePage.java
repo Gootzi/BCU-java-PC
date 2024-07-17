@@ -64,13 +64,13 @@ public class StagePage extends Page {
 		info.setRowHeight(size(x, y, 50));
 	}
 
-	protected void setData(Stage st, int starId) {
+	protected synchronized void setData(Stage st, int starId) {
 		stage = st;
 		strt.setEnabled(st != null);
 		infs.setEnabled(st != null);
 		infm.setEnabled(st != null && st.info instanceof DefStageInfo && ((DefStageInfo) st.info).maxMaterial != -1);
 		if(st != null) {
-			info.setData(st);
+			info.setData(st, starId);
 			jt.setData(st, Math.min(starId, st.getCont().stars.length - 1));
 		}
 		jspjt.scrollRectToVisible(new Rectangle(0, 0, 1, 1));
