@@ -126,8 +126,8 @@ public class ResourcePage extends Page {
 	private void renderText(ActionEvent e) {
 		if (sel == null)
 			return;
-		if (tabl.isSelected()) { // todo: make table reading better
-			StringBuilder txt = new StringBuilder("<html><table><tr>");
+		if (tabl.isSelected() && sel.getName().endsWith(".csv")) { // todo: make table reading better
+			StringBuilder txt = new StringBuilder("<html><table border=\"1\"><tr>");
 			Queue<String> queue = sel.getData().readLine();
 
 			for (String header : queue.poll().split(", *"))
