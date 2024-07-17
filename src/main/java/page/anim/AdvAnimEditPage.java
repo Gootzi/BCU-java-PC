@@ -306,7 +306,7 @@ public class AdvAnimEditPage extends Page implements TreeCont {
 			System.out.println(str);// TODO
 		});
 
-		revt.setLnr(x -> { // todo: see if i can optimize my fuckass code
+		revt.setLnr(x -> {
 			MaAnim anim = maet.ma;
 			if (anim == null)
 				return;
