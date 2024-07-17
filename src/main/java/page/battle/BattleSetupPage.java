@@ -109,6 +109,7 @@ public class BattleSetupPage extends LubCont {
 	protected void mouseClicked(MouseEvent e) {
 		if (e.getSource() == sttb)
 			sttb.clicked(e.getPoint());
+		super.mouseClicked(e);
 	}
 
 	private void addListeners() {
