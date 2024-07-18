@@ -258,26 +258,26 @@ public class LineUpBox extends Canvas {
 		return new PP(getSize()).divide(new P(600, 300));
 	}
 
-	private void jump(int ior, int ifi) {
-		Form f = getForm(ior);
-		if (ior > ifi)
-			for (int i = ifi; i <= ior; i++)
+	private void jump(int origin, int dest) {
+		Form f = getForm(origin);
+		if (origin > dest)
+			for (int i = dest; i <= origin; i++)
 				f = setForm(i, f);
 		else {
-			if (ifi > 9) {
-				f = setForm(ifi, f);
-				if (ior > 9)
-					setForm(ior, f);
+			if (dest > 9) {
+				f = setForm(dest, f);
+				if (origin > 9)
+					setForm(origin, f);
 				else
 					for (int i = 0; i < 5; i++)
 						if (backup[i] == null) {
 							setForm(10 + i, f);
 							break;
 						}
-				ifi = 9;
+				dest = 9;
 				f = null;
 			}
-			for (int i = ifi; i >= ior; i--)
+			for (int i = dest; i >= origin; i--)
 				f = setForm(i, f);
 		}
 		lu.arrange();

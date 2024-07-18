@@ -74,7 +74,8 @@ public class BattleSetupPage extends LubCont {
 			strt.setEnabled(st.lim.lvr.isValid(b.sele.lu));
 		else
 			tmax.setEnabled(false);
-		lub.setLU(b.sele.lu);
+		if (lub.getLU() != b.sele.lu)
+			lub.setLU(b.sele.lu);
 		mod.setBasis(BasisSet.current());
 		mod.setComboList(BasisSet.current().sele.lu.coms);
 		mod.setBanned(st.getCont().stageLimit != null ? st.getCont().stageLimit.bannedCatCombo : null);
