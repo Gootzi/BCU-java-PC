@@ -135,11 +135,11 @@ public class Interpret extends Data {
 
     public static void loadCannonMax() {
         for (int i = 1; i <= Treasure.curveData.size(); i++)
-            TMAX[29 + i] = Treasure.curveData.get(i).max;
+            TMAX[29 + i] = Treasure.curveData.get(i).getMax();
         for (int i = 1; i <= Treasure.baseData.size(); i++)
-            TMAX[36 + i] = Treasure.baseData.get(i).max;
+            TMAX[36 + i] = Treasure.baseData.get(i).getMax();
         for (int i = 1; i <= Treasure.decorationData.size(); i++)
-            TMAX[43 + i] = Treasure.decorationData.get(i).max;
+            TMAX[43 + i] = Treasure.decorationData.get(i).getMax();
     }
 
     public static boolean allRangeSame(MaskEntity me) {
