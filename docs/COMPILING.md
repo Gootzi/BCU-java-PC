@@ -1,6 +1,7 @@
 # Compiling BCU
 ###### Last Updated: July 19, 2024
-###### NOTE: This is still incomplete, and will be worked on in the near future.
+###### NOTE: If you just want to install BCU, stop reading and go to the README!!
+###### ANOTHER NOTE: This is still incomplete, and will be worked on in the near future.
 
 ## References
 - Terminal: The Terminal or Console.
