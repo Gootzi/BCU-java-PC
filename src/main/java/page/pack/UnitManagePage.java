@@ -9,7 +9,10 @@ import common.pack.PackData.UserPack;
 import common.pack.Source;
 import common.pack.UserProfile;
 import common.util.anim.AnimCE;
-import common.util.unit.*;
+import common.util.unit.Combo;
+import common.util.unit.Form;
+import common.util.unit.Unit;
+import common.util.unit.UnitLevel;
 import main.Opts;
 import page.*;
 import page.anim.AnimGroupTree;
@@ -494,7 +497,7 @@ public class UnitManagePage extends Page {
 		} else {
 			edit.setToolTipText(null);
 		}
-		remf.setEnabled(b && frm.fid > 0);
+		remf.setEnabled(b && frm.fid > 0 && !comboList(f.unit).contains(f));
 		jtff.setEnabled(b);
 		if (frm != null) {
 			jtff.setText(f.names.toString());
@@ -517,7 +520,7 @@ public class UnitManagePage extends Page {
 			jtfl.setText(ul.toString());
 		else
 			jtfl.setText("");
-		reml.setEnabled(b && ul.units.size() == 0);
+		reml.setEnabled(b && ul.units.isEmpty());
 	}
 
 	private void setPack(UserPack pack) {
@@ -566,7 +569,7 @@ public class UnitManagePage extends Page {
 			changing = boo;
 		}
 		boolean b = unit != null && pac.editable;
-		remu.setEnabled(b);
+		remu.setEnabled(b && comboList(unit).isEmpty());
 		rar.setEnabled(b);
 		cbl.setEnabled(b);
 		addf.setEnabled(b && getSelectedAnim() != null && unit.forms.length < 3);
@@ -605,4 +608,12 @@ public class UnitManagePage extends Page {
 		return null;
 	}
 
+	private List<Form> comboList(Unit u) {
+		List<Form> forms = new ArrayList<>();
+		for (Combo c : pac.combos)
+			for (Form f : c.forms)
+				if (Arrays.stream(u.forms).anyMatch(uf -> uf == f))
+					forms.add(f);
+		return forms;
+	}
 }

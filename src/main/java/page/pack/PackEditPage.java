@@ -714,7 +714,7 @@ public class PackEditPage extends Page {
 				}
 			}
 
-			reme.setEnabled(e.findApp(pac.mc).size() == 0 && !cont);
+			reme.setEnabled(e.findApp(pac.mc).isEmpty() && !cont);
 		}
 	}
 
