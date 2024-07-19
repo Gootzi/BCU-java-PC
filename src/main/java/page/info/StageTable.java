@@ -58,6 +58,7 @@ public class StageTable extends AbJTable {
 
 	@Override
 	public Class<?> getColumnClass(int c) {
+		c = lnk[c];
 		if (c == 1)
 			return Enemy.class;
 		else

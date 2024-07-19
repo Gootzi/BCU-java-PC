@@ -84,7 +84,7 @@ public class StageEditTable extends AbJTable implements Reorderable {
 
 	@Override
 	public Class<?> getColumnClass(int c) {
-		return c == 1 ? String.class : Object.class;
+		return lnk[c] == 1 ? String.class : Object.class;
 	}
 
 	@Override
