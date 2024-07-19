@@ -8,8 +8,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public abstract class Page extends JPanel implements RetFunc {
@@ -286,6 +288,8 @@ public abstract class Page extends JPanel implements RetFunc {
 
 				result.revalidate();
 				result.repaint();
+				result.getTableHeader().revalidate();
+				result.getTableHeader().repaint();
 			}
 		} catch (Exception ignored) {
 
