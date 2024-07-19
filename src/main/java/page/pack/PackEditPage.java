@@ -826,7 +826,7 @@ public class PackEditPage extends Page {
 		}
 		boolean re = pac.relyOn(rel.getSID());
 		remr.setText(0, re ? "rema" : "rem");
-		remr.setForeground(re ? Color.RED : Color.BLACK);
+		remr.setForeground(re ? Color.RED : MainBCU.light ? Color.BLACK : Color.WHITE);
 		remr.setEnabled(true);
 	}
 

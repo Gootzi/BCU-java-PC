@@ -2,7 +2,10 @@ package page.basis;
 
 import common.battle.BasisLU;
 import common.battle.BasisSet;
+import common.pack.Identifier;
+import common.pack.UserProfile;
 import common.util.unit.Combo;
+import main.MainBCU;
 import page.MainLocale;
 import utilpc.Interpret;
 
@@ -33,7 +36,7 @@ public class ModifierList extends JList<Object> {
                 JLabel jl = (JLabel) super.getListCellRendererComponent(l, o, ind, s, f);
                 if (o instanceof Combo) {
                     Combo c = (Combo) o;
-                    if (banned != null && banned.contains(c.type)) {
+                    if (banned != null && banned.contains(c.type) || (c.id.pack != Identifier.DEF && !UserProfile.getUserPack(c.id.pack).useCombos)) {
                         jl.setText("<html><strike>" + Interpret.lvl[c.lv] + " Combo: " + Interpret.comboInfo(c, lineup) + "</strike></html>");
                         jl.setForeground(getSelectedIndex() == ind ? Color.WHITE : Color.GRAY);
                     } else {
@@ -41,7 +44,7 @@ public class ModifierList extends JList<Object> {
                     }
                 } else {
                     jl.setText(o.toString());
-                    jl.setForeground(getSelectedIndex() == ind ? Color.WHITE : Color.BLUE);
+                    jl.setForeground(getSelectedIndex() == ind ? Color.WHITE : MainBCU.light ? Color.BLUE : Color.CYAN);
                 }
                 return jl;
             }
