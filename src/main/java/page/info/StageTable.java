@@ -79,7 +79,7 @@ public class StageTable extends AbJTable {
 
 	@Override
 	public String getToolTipText(MouseEvent e) {
-		if (columnAtPoint(e.getPoint()) == 2) {
+		if (lnk[columnAtPoint(e.getPoint())] == 2) {
 			return "{hp, atk}";
 		} else {
 			return null;
@@ -88,6 +88,7 @@ public class StageTable extends AbJTable {
 
 	@Override
 	public Object getValueAt(int r, int c) {
+		c = lnk[c];
 		if (data == null || r < 0 || c < 0 || r >= data.length || c >= data[r].length)
 			return null;
 		if (c == 2)
