@@ -90,12 +90,51 @@ public abstract class AbEnemyFilterBox extends Page {
         return enemf;
     }
 
+    protected List<AbEnemy> filterNameDynamic() {
+        if (name.isEmpty())
+            return enem;
+
+        int nlen = name.length();
+        int toll = MainBCU.dynamicTolerance[Math.min(MainBCU.dynamicTolerance.length - 1, nlen)];
+
+        String lowName = name.toLowerCase();
+        String headFname;
+
+        List<AbEnemy> enemf = new ArrayList<>();
+        for (AbEnemy e : enem) {
+            String fname = e instanceof Enemy ? MultiLangCont.getStatic().ENAME.getCont((Enemy) e) : ((EneRand) e).name;
+            if (fname == null)
+                continue;
+            fname = fname.toLowerCase();
+
+            switch (nlen) {
+                case 1:
+                    if(fname.startsWith(lowName) || fname.contains(" " + lowName))
+                        enemf.add(e);
+                    break;
+                case 2:
+                case 3:
+                    if(fname.startsWith(lowName) || fname.contains(" " + lowName) || fname.contains(lowName + " ") || fname.endsWith(lowName))
+                        enemf.add(e);
+                    break;
+                default:
+                    headFname = fname.substring(0, Math.min(fname.length(), nlen + toll));
+                    if( (fname.charAt(0) == lowName.charAt(0) && (UtilPC.damerauLevenshteinDistance(headFname, lowName) <= 2 * toll)) || fname.contains(lowName))
+                        enemf.add(e);
+                    break;
+            }
+        }
+        return enemf;
+    }
+
     /**
      0 - filter both type and name
      1 - only filter by name
      */
     protected void confirm(int type) {
-        getFront().callBack(type == 0 ? filterType() : type == 1 ? filterName() : null);
+        getFront().callBack(type == 0 ? filterType()
+                : type == 1 ? (MainBCU.useDynamic ? filterNameDynamic() : filterName())
+                : null);
     }
 
 }
