@@ -28,8 +28,8 @@ public class AbEnemyListTable  extends SortTable<AbEnemy> {
     }
 
     public static void redefine() {
-        tit = new String[] { "ID", "", "HP", "HB", "atk", Page.get(MainLocale.INFO, "range"), Page.get(MainLocale.INFO, "atkf"),
-                Page.get(MainLocale.INFO, "speed"), Page.get(MainLocale.INFO, "drop"), Page.get(MainLocale.INFO, "preaa"), "hp/dps", "HP/HB/dps" };
+        tit = new String[] { "ID", "name", Page.get(MainLocale.INFO, "HP"), Page.get(MainLocale.INFO, "hb"), Page.get(MainLocale.INFO, "atk"), Page.get(MainLocale.INFO, "range"), Page.get(MainLocale.INFO, "atkf"),
+                Page.get(MainLocale.INFO, "speed"), Page.get(MainLocale.INFO, "drop"), Page.get(MainLocale.INFO, "preaa"), "dps", Page.get(MainLocale.INFO, "minpos"), Page.get(MainLocale.INFO, "will") };
     }
 
     private final Page page;
@@ -75,8 +75,6 @@ public class AbEnemyListTable  extends SortTable<AbEnemy> {
             c--;
         if (c == 0)
             return e0.compareTo(e1);
-        if (c == 8)
-            return Double.compare((double) get(e0, c), (double) get(e1, c));
 
         if(e0 instanceof EneRand)
             if(e1 instanceof Enemy)
@@ -84,9 +82,13 @@ public class AbEnemyListTable  extends SortTable<AbEnemy> {
             else if(e1 instanceof EneRand)
                 return 0;
 
-        if(e1 instanceof EneRand)
-            if(e0 instanceof Enemy)
-                return 1;
+        if(e1 instanceof EneRand && e0 instanceof Enemy)
+            return 1;
+
+        if (c == 8)
+            return Double.compare((double) get(e0, c), (double) get(e1, c));
+        else if (c == 11)
+            return Float.compare((float) get(e0, c), (float) get(e1, c));
 
         int i0 = (int) get(e0, c);
         int i1 = (int) get(e1, c);
@@ -112,7 +114,7 @@ public class AbEnemyListTable  extends SortTable<AbEnemy> {
             else if (c == 5)
                 return e.de.getRange();
             else if (c == 6)
-                return e.de.getItv();
+                return e.anim != null ? e.de.getItv() : "Corrupted";
             else if (c == 7)
                 return e.de.getSpeed();
             else if (c == 8)
@@ -120,9 +122,11 @@ public class AbEnemyListTable  extends SortTable<AbEnemy> {
             else if (c == 9)
                 return e.de.rawAtkData()[0][1];
             else if (c == 10)
-                return e.de.allAtk() == 0 ? Integer.MAX_VALUE : (int) ((long) e.de.getHp() * e.de.getItv() / e.de.allAtk());
+                return (int) ((long) e.de.allAtk() * 30 / e.de.getItv());
             else if (c == 11)
-                return e.de.getHb() < 2 ? (int) get(e, 10) : (int) get(e, 10) / e.de.getHb();
+                return e.de.getLimit();
+            else if (c == 12)
+                return e.de.getWill() + 1;
             else
                 return null;
         } else {
