@@ -54,11 +54,6 @@ class MaModelEditTable extends AnimTable<int[]> {
 	}
 
 	@Override
-	public int getColumnCount() {
-		return strs.length;
-	}
-
-	@Override
 	public String getColumnName(int c) {
 		return strs[lnk[c]];
 	}

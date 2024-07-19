@@ -57,11 +57,6 @@ class SCGroupEditTable extends AbJTable {
 	}
 
 	@Override
-	public int getColumnCount() {
-		return title.length;
-	}
-
-	@Override
 	public String getColumnName(int c) {
 		return title[lnk[c]];
 	}

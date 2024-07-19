@@ -79,11 +79,6 @@ class EREditTable extends AbJTable implements Reorderable {
 	}
 
 	@Override
-	public int getColumnCount() {
-		return title.length;
-	}
-
-	@Override
 	public String getColumnName(int c) {
 		return title[lnk[c]];
 	}

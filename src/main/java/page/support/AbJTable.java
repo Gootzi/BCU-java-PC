@@ -20,7 +20,6 @@ public abstract class AbJTable extends JTable implements TableModel {
 		this.title = title;
 
 		lnk = new int[getColumnCount()];
-
 		for (int i = 0; i < lnk.length; i++)
 			lnk[i] = i;
 
@@ -82,7 +81,12 @@ class TModel extends DefaultTableColumnModel {
 	}
 
 	@Override
-	public void moveColumn(int c, int nc) {
+	public TableColumn getColumn(int columnIndex) {
+		return super.getColumn(Math.min(columnIndex, getColumnCount() - 1));
+	}
+
+	@Override
+	public void moveColumn(int c, int nc) { // todo: sometimes this crashes
 		c = Math.max(c, 0);
 		c = Math.min(c, getColumnCount() - 1);
 		nc = Math.max(nc, 0);
@@ -92,7 +96,6 @@ class TModel extends DefaultTableColumnModel {
 			return;
 		t.swap(c, nc);
 		super.moveColumn(c, nc);
-
 	}
 
 	@Override

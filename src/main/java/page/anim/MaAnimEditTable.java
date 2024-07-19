@@ -52,11 +52,6 @@ public class MaAnimEditTable extends AnimTable<Part> {
 	}
 
 	@Override
-	public int getColumnCount() {
-		return strs.length;
-	}
-
-	@Override
 	public String getColumnName(int c) {
 		return strs[lnk[c]];
 	}

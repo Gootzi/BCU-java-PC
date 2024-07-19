@@ -56,11 +56,6 @@ class ComingTable extends AbJTable {
 	}
 
 	@Override
-	public int getColumnCount() {
-		return title.length;
-	}
-
-	@Override
 	public String getColumnName(int arg0) {
 		return title[arg0];
 	}
