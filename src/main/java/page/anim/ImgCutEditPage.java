@@ -500,7 +500,7 @@ public class ImgCutEditPage extends Page implements AbEditPage {
 
 		resz.setLnr(x -> {
 			double d = CommonStatic.parseIntN(resz.getText()) * 0.01;
-			if (Opts.conf("do you want to resize sprite to " + d + "%?")) {
+			if (d > 0 && Opts.conf("do you want to resize sprite to " + d + "%?")) {
 				icet.anim.resize(d);
 				icet.anim.ICedited();
 				icet.anim.unSave("resized");

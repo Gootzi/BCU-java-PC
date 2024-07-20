@@ -456,21 +456,12 @@ public class MaAnimEditPage extends Page implements AbEditPage {
 		tmul.setLnr(x -> {
 			if (changing)
 				return;
-			changing = true;
-
-				float d = CommonStatic.parseIntN(tmul.getText()) * 0.01f;
-
-			if(d <= 0) {
+			float d = CommonStatic.parseIntN(tmul.getText()) * 0.01f;
+			if(d <= 0 || !Opts.conf((d < 1 ? "Decrease " : "Increase ") + "animation speed to " + (d * 100) + "%?")) {
 				tmul.setText("");
-				changing = false;
 				return;
 			}
-
-			String str = d < 1 ? "Decrease " : "Increase ";
-			if (!Opts.conf(str + "animation speed to " + (d * 100) + "%?")) {
-				changing = false;
-				return;
-			}
+			changing = true;
 
 			if (lmul.isSelected() && maet.getSelected().length > 0) {
 				for (Part p : maet.getSelected()) {
