@@ -133,6 +133,16 @@ public class UtilPC {
 		return null;
 	}
 
+	public static ImageIcon createIcon(int type, int id, int w, int h) {
+		BufferedImage img = getIcon(type, id);
+		if (img != null) {
+			int pw = MainFrame.F.getRootPane().getWidth();
+			int ph = MainFrame.F.getRootPane().getHeight() - MenuBarHandler.getBar().getHeight();
+			return new ImageIcon(img.getScaledInstance(pw * w / 2300, ph * h / 1300, Image.SCALE_SMOOTH));
+		}
+		return null;
+	}
+
 	public static ImageIcon getIcon(VImg v) {
 		FakeImage img = v.getImg();
 		if (img == null)
