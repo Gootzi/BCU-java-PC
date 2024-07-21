@@ -1,6 +1,6 @@
 # Battle Cats Ultimate
 ###### A fan-made program featuring data and animations in The Battle Cats by PONOS, along with custom content.
-###### Last Updated: July 21st, 2024
+###### Last Written: July 21st, 2024
 
 ## Installing BCU Version 5 for Windows, macOS, or Linux
 
@@ -28,7 +28,7 @@ If none of these apply to your situation, you can report it through GitHub Issue
 
 #### Windows Issues and Warnings
 
-Don't install `Windiws Online` installer if your OS type is 64-bit. You will have to download `Windows Offline (64-bit)` one.
+Don't install `Windows Online` installer if your OS type is 64-bit. You will have to download `Windows Offline (64-bit)` one.
 It's fine to install `Windows Online` or `Windows Offline` if your OS type is 32-bit. If you install incorrect JRE, BCU will have memory space issue.
 
 **Do not run BCU with `Open with Java` option!** This will connect BCU with `system32` folder, and BCU will try to create subfolders in there.
