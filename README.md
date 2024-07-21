@@ -1,5 +1,6 @@
 # Battle Cats Ultimate
 ###### A fan-made program featuring data and animations in The Battle Cats by PONOS, along with custom content.
+###### Last Updated: July 21st, 2024
 
 ## Installing BCU Version 5 for Windows, macOS, or Linux
 
@@ -13,7 +14,8 @@
 Refer to the links below with the label "BCU Tutorial" under the **Links & Resources** section.
 
 ### Common Issues/Errors
-If none of these apply to your situation, you can report it through GitHub Issues or the BCU Discord server, linked below. Make sure to include the most recent error log, which should be the newest .log file in the `log` folder.
+If none of these apply to your situation, you can report it through GitHub Issues or the BCU English Discord server, linked below. Make sure to include the most recent error log, which should be the newest .log file in the `log` folder.
+- If you're able to open BCU, you can also find the latest log file through the `Error Logs` button in the main menu.
 
 #### All Platforms
 - *Another BCU is running or last BCU didn't close properly*
@@ -61,6 +63,7 @@ Some issues below can be fixed by running the jar via Terminal. If it suggests d
     - Follow the instructions above to use Terminal.
 - *WARNING: NSWindow drag regions should only be invalidated on the Main Thread! This will throw an exception in the future.*
     - This usually happens only if JOGL is enabled. In order to keep JOGL on, make sure your JDK version is 8, then follow the instructions above to use Terminal.
+    - NOTE: As of July 2024, this should no longer be occurring. If this is something you are experiencing, please report it through either GitHub Issues or in the BCU English Discord server!
 
 ## Links & Resources
 
