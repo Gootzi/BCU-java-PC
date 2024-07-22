@@ -117,7 +117,7 @@ public class HeadTable extends AbJTable {
 			MainFrame.changePanel(new CastleViewPage(page, CastleList.from(sta), sta.castle));
 		if (r == 4 && c == 7 && data[r][c] instanceof LvRestrict)
 			MainFrame.changePanel(new LvRestrictPage(page, (LvRestrict) data[r][c]));
-		if (r == 3 && c == 7 && data[r][c] != null)
+		if (r == 3 && c == 7 && data[r][c] instanceof CharaGroup) // todo: fix so charagroup doesn't replace global cooldown
 			MainFrame.changePanel(new CharaGroupPage(page, (CharaGroup) data[r][c]));
 	}
 
