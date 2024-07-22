@@ -980,10 +980,10 @@ public class Interpret extends Data {
     public static String readHTMLStage(Stage st, boolean noHtml) {
         StringBuilder ans = new StringBuilder((noHtml ? "" : "<html>") + Page.get(MainLocale.INFO, "comboban") + ": ");
 
-        if (st.getCont().stageLimit != null && !st.getCont().stageLimit.bannedCatCombo.isEmpty()) {
-            String[] comboData = new String[st.getCont().stageLimit.bannedCatCombo.size()];
+        if (st.lim != null && st.lim.stageLimit != null && !st.lim.stageLimit.bannedCatCombo.isEmpty()) {
+            String[] comboData = new String[st.lim.stageLimit.bannedCatCombo.size()];
             int i = 0;
-            for (int id : st.getCont().stageLimit.bannedCatCombo)
+            for (int id : st.lim.stageLimit.bannedCatCombo)
                 comboData[i++] = Page.get(MainLocale.UTIL, "nb" + id);
             ans.append(String.join(", ", comboData));
         } else {

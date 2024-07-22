@@ -175,58 +175,55 @@ public class HeadTable extends AbJTable {
 		img[4] = infs[5];
 		img[5] = st.castle;
 
-		if (st.getCont().stageLimit != null) {
-			if (st.getCont().stageLimit.maxMoney > 0) {
+		Limit lim = st.getLim(star);
+		if (lim.stageLimit != null) {
+			if (lim.stageLimit.maxMoney > 0) {
 				bas2[6] = climits[0];
-				bas2[7] = st.getCont().stageLimit.maxMoney;
+				bas2[7] = lim.stageLimit.maxMoney;
 			}
-			if (st.getCont().stageLimit.globalCooldown > 0) {
+			if (lim.stageLimit.globalCooldown > 0) {
 				img[6] = climits[1];
 				img[7] = MainBCU.seconds
-						? MainBCU.toSeconds(st.getCont().stageLimit.globalCooldown) + "s"
-						: st.getCont().stageLimit.globalCooldown + "f";
+						? MainBCU.toSeconds(lim.stageLimit.globalCooldown) + "s"
+						: lim.stageLimit.globalCooldown + "f";
 			}
 		}
-
-		Limit lim = st.getLim(0);
-		if (lim != null) {
-			if (lim.rare != 0) {
-				rar[0] = limits[0];
-				int j = 1;
-				for (int i = 0; i < rarity.length; i++)
-					if (((lim.rare >> i) & 1) > 0)
-						rar[j++] = rarity[i];
-			}
-			if (lim.lvr != null) {
-				rar[6] = limits[6];
-				rar[7] = lim.lvr;
-			}
-			if (lim.group != null) {
-				img[6] = limits[5];
-				img[7] = lim.group;
-			}
-			if (lim.min + lim.max + lim.max + lim.line + lim.num > 0) {
-				int i = 0;
-				if (lim.min > 0) {
-					reg[0] = limits[3];
-					reg[1] = String.valueOf(lim.min);
-					i = 2;
-				}
-				if (lim.max > 0) {
-					reg[i] = limits[4];
-					reg[i + 1] = String.valueOf(lim.max);
-					i += 2;
-				}
-				if (lim.num > 0) {
-					reg[i] = limits[1];
-					reg[i + 1] = String.valueOf(lim.num);
-					i += 2;
-				}
-				if (lim.line > 0)
-					reg[i] = limits[2];
-			}
-		}
-		data = lstr;
+        if (lim.rare != 0) {
+            rar[0] = limits[0];
+            int j = 1;
+            for (int i = 0; i < rarity.length; i++)
+                if (((lim.rare >> i) & 1) > 0)
+                    rar[j++] = rarity[i];
+        }
+        if (lim.lvr != null) {
+            rar[6] = limits[6];
+            rar[7] = lim.lvr;
+        }
+        if (lim.group != null) {
+            img[6] = limits[5];
+            img[7] = lim.group;
+        }
+        if (lim.min + lim.max + lim.max + lim.line + lim.num > 0) {
+            int i = 0;
+            if (lim.min > 0) {
+                reg[0] = limits[3];
+                reg[1] = String.valueOf(lim.min);
+                i = 2;
+            }
+            if (lim.max > 0) {
+                reg[i] = limits[4];
+                reg[i + 1] = String.valueOf(lim.max);
+                i += 2;
+            }
+            if (lim.num > 0) {
+                reg[i] = limits[1];
+                reg[i + 1] = String.valueOf(lim.num);
+                i += 2;
+            }
+            if (lim.line > 0)
+                reg[i] = limits[2];
+        }
+        data = lstr;
 	}
 
 	@Override

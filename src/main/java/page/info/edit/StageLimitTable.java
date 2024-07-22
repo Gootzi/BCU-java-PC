@@ -95,7 +95,7 @@ public class StageLimitTable extends Page {
             abler(false);
             return;
         }
-        stli = st.getCont().stageLimit == null ? st.getCont().stageLimit = new StageLimit() : st.getCont().stageLimit;
+        stli = st.lim.stageLimit == null ? st.lim.stageLimit = new StageLimit() : st.lim.stageLimit;
         jban.setText(stli.maxMoney + "");
         jcre.setText(stli.globalCooldown + "");
         jlco.repaint();

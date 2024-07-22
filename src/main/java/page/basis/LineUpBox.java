@@ -298,4 +298,8 @@ public class LineUpBox extends Canvas {
 		return lu;
 	}
 
+	public Limit getLim() {
+		return lim;
+	}
+
 }
