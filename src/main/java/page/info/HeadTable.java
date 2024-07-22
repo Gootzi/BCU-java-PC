@@ -92,7 +92,7 @@ public class HeadTable extends AbJTable {
 			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		else if (r == 4 && c == 7 && data[r][c] instanceof LvRestrict)
 			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		else if (r == 3 && c == 7 && data[r][c] != null)
+		else if (r == 3 && c == 7 && data[r][c] instanceof CharaGroup)
 			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		else
 			setCursor(Cursor.getDefaultCursor());
