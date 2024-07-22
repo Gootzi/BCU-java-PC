@@ -1,9 +1,11 @@
 package page.info.edit;
 
 import common.CommonStatic;
+import common.pack.PackData;
 import common.util.stage.Limit;
 import common.util.stage.MapColc.PackMapColc;
 import common.util.stage.Stage;
+import common.util.stage.StageLimit;
 import page.JBTN;
 import page.JTF;
 import page.Page;
@@ -22,14 +24,17 @@ public class LimitEditPage extends Page {
 	private final JBTN addl = new JBTN(0, "add");
 	private final JBTN reml = new JBTN(0, "rem");
 	private final LimitTable lt;
+	private final StageLimitTable slt;
 
 	private final Stage st;
 
 	protected LimitEditPage(Page p, Stage stage) {
 		super(p);
 
+		PackData.UserPack pack = ((PackMapColc) stage.getCont().getCont()).pack;
 		st = stage;
-		lt = new LimitTable(this, ((PackMapColc) stage.getCont().getCont()).pack);
+		lt = new LimitTable(this, pack);
+		slt = new StageLimitTable(this, pack);
 
 		ini();
 	}
@@ -60,6 +65,7 @@ public class LimitEditPage extends Page {
 		set(stag, x, y, 50, 950, 200, 50);
 		set(star, x, y, 250, 950, 200, 50);
 		set(lt, x, y, 500, 100, 1400, 100);
+		set(slt, x, y, 500, 250, 1400, 300);
 	}
 
 	private void addListeners$0() {
@@ -119,6 +125,7 @@ public class LimitEditPage extends Page {
 		add(star);
 		add(stag);
 		add(lt);
+		add(slt);
 		setListL();
 		addListeners$0();
 	}
@@ -130,6 +137,7 @@ public class LimitEditPage extends Page {
 		star.setText(l == null ? "" : l.star == -1 ? "all stars" : ((l.star + 1) + " star"));
 		stag.setText(l == null ? "" : l.sid == -1 ? "all stages" : l.sid + " - " + st.getCont().list.get(l.sid));
 		lt.setLimit(l);
+		slt.setStageLimit(l != null ? l.stageLimit == null ? l.stageLimit = new StageLimit() : l.stageLimit : null);
 	}
 
 	private void setListL() {

@@ -95,7 +95,15 @@ public class StageLimitTable extends Page {
             abler(false);
             return;
         }
-        stli = st.lim.stageLimit == null ? st.lim.stageLimit = new StageLimit() : st.lim.stageLimit;
+        setStageLimit(st.lim.stageLimit == null ? st.lim.stageLimit = new StageLimit() : st.lim.stageLimit);
+    }
+
+    public void setStageLimit(StageLimit sl) {
+        if (sl == null) {
+            abler(false);
+            return;
+        }
+        stli = sl;
         jban.setText(stli.maxMoney + "");
         jcre.setText(stli.globalCooldown + "");
         jlco.repaint();
