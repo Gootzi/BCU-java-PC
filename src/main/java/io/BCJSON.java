@@ -25,7 +25,7 @@ public class BCJSON {
 
 	public static void check() {
 		LoadPage.prog("checking update information");
-		UpdateJson json = Data.ignore(UpdateCheck::checkUpdate);
+		UpdateJson json = Data.silent(UpdateCheck::checkUpdate);
 		List<Downloader> assets = null, musics, libs = null, lang;
 		UpdateJson.JarJson[] jars = null;
 		try {
