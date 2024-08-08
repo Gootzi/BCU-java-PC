@@ -977,10 +977,13 @@ public class Interpret extends Data {
         return new Point((int) ((p.x + pp.x) / size), (int) ((p.y + pp.y) / size));
     }
 
-    public static String readHTMLStage(Stage st, boolean noHtml) {
+    public static String readHTMLStage(Stage st, boolean noHtml) { // TODO: cleanup html
+        boolean exists = st.lim != null && st.lim.stageLimit != null;
+        if (!exists)
+            return noHtml ? "<html>No stage limit</html>" : "No limits";
         StringBuilder ans = new StringBuilder((noHtml ? "" : "<html>") + Page.get(MainLocale.INFO, "comboban") + ": ");
 
-        if (st.lim != null && st.lim.stageLimit != null && !st.lim.stageLimit.bannedCatCombo.isEmpty()) {
+        if (!st.lim.stageLimit.bannedCatCombo.isEmpty()) {
             String[] comboData = new String[st.lim.stageLimit.bannedCatCombo.size()];
             int i = 0;
             for (int id : st.lim.stageLimit.bannedCatCombo)
@@ -989,6 +992,10 @@ public class Interpret extends Data {
         } else {
             ans.append(Page.get(MainLocale.PAGE, "none"));
         }
+
+        ans.append("<br>Cooldown on Start: ").append(st.lim.stageLimit.coolStart);
+        ans.append("<br>Cooldown Multipliers: ").append(Arrays.toString(st.lim.stageLimit.cooldownMultiplier));
+        ans.append("<br>Cost Multipliers: ").append(Arrays.toString(st.lim.stageLimit.costMultiplier));
 
         if (!noHtml)
             ans.append("</html>");
