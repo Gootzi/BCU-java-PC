@@ -44,6 +44,7 @@ public class LineUpBox extends Canvas {
 
 	@Override
 	public void paint(Graphics g) {
+		boolean hasLimit = lim != null && lim.stageLimit != null;
 		VImg[] slot = CommonStatic.getBCAssets().slot;
 		Image bimg = createImage(600, 300);
 		if (bimg == null)
@@ -76,16 +77,21 @@ public class LineUpBox extends Canvas {
 						gra.colRect(120 * j, 100 * i, img.getImg().getWidth(), img.getImg().getHeight(), 255, 0, 0, 100);
 						Res.getCost(-1, false,
 							new SymCoord(gra, 1, 120 * j, 100 * i + img.getImg().getHeight(), 2));
-					} else if (swap) {
-						Res.getCost((int) ef.getPrice(price), true,
-								new SymCoord(gra, 0.8f, 120 * j, 100 * i + (img.getImg().getHeight() / 3.5f), 2));
-						Res.getLv(lu.getLv(f).getLv() + lu.getLv(f).getPlusLv(),
-								new SymCoord(gra, 1, 120 * j, 100 * i + img.getImg().getHeight(), 2));
 					} else {
-						Res.getCost((int) ef.getPrice(price), true,
-								new SymCoord(gra, 1, 120 * j, 100 * i + img.getImg().getHeight(), 2));
-						Res.getLv(lu.getLv(f).getLv() + lu.getLv(f).getPlusLv(),
-								new SymCoord(gra, 0.8f, 120 * j, 100 * i + (img.getImg().getHeight() / 3.5f), 2));
+						int cost = (int) ef.getPrice(price);
+						if (hasLimit)
+							cost = cost * lim.stageLimit.costMultiplier[f.unit.rarity] / 100;
+						if (swap) {
+							Res.getCost(cost, true,
+									new SymCoord(gra, 0.8f, 120 * j, 100 * i + (img.getImg().getHeight() / 3.5f), 2));
+							Res.getLv(lu.getLv(f).getLv() + lu.getLv(f).getPlusLv(),
+									new SymCoord(gra, 1, 120 * j, 100 * i + img.getImg().getHeight(), 2));
+						} else {
+							Res.getCost(cost, true,
+									new SymCoord(gra, 1, 120 * j, 100 * i + img.getImg().getHeight(), 2));
+							Res.getLv(lu.getLv(f).getLv() + lu.getLv(f).getPlusLv(),
+									new SymCoord(gra, 0.8f, 120 * j, 100 * i + (img.getImg().getHeight() / 3.5f), 2));
+						}
 					}
 				}
 			}

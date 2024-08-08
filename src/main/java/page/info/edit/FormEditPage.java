@@ -229,7 +229,7 @@ public class FormEditPage extends EntityEditPage {
 			uniDesc = new String[]{"","","",""};
 
 		for (int i = 0; i < fdesc.length; i++)
-			if (uniDesc[i].length() == 0)
+			if (uniDesc[i].isEmpty())
 				fdesc[i].setHint("Description Line " + (i + 1));
 			else
 				fdesc[i].setText(uniDesc[i]);
