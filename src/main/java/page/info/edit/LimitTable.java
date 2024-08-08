@@ -172,7 +172,6 @@ public class LimitTable extends Page {
 		set(jcg);
 		set(jlr);
 
-
 		for (int i = 0; i < brars.length; i++) {
 			add(brars[i] = new JTG(rarity[i]));
 			brars[i].setSelected(true);
