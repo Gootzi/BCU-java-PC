@@ -32,8 +32,8 @@ public class StageLimitTable extends Page {
     private final JL racool = new JL(MainLocale.INFO, "cdo");
     private final JTF jban = new JTF();
     private final JTF jcre = new JTF();
-    private final JTF[] jcool = new JTF[6];
-    private final JTF[] jcost = new JTF[6];
+    private final JTF[] jcool = new JTF[rarity.length];
+    private final JTF[] jcost = new JTF[rarity.length];
     private final JTG cdst = new JTG(MainLocale.INFO, "ht22");
 
     private final CrossList<String> jlco = new CrossList<>(Interpret.getComboFilter(0));
