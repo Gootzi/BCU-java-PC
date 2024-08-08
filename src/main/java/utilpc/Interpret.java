@@ -21,6 +21,7 @@ import common.util.stage.info.DefStageInfo;
 import common.util.stage.info.StageInfo;
 import common.util.unit.Combo;
 import common.util.unit.Enemy;
+import io.BCJSON;
 import main.MainBCU;
 import page.MainLocale;
 import page.Page;
@@ -1183,7 +1184,7 @@ public class Interpret extends Data {
     public static Vector<CommonStatic.Lang.Locale> getLocales() {
         Vector<CommonStatic.Lang.Locale> locales = new Vector<>();
         for (CommonStatic.Lang.Locale l : CommonStatic.Lang.Locale.values())
-            if (l != CommonStatic.Lang.Locale.RU && l != CommonStatic.Lang.Locale.TH)
+            if (Arrays.stream(BCJSON.PC_LANG_CODES).anyMatch(x -> x.equals(l.code)))
                 locales.add(l);
         return locales;
     }
