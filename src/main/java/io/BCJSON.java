@@ -26,7 +26,7 @@ public class BCJSON {
 	public static void check() {
 		LoadPage.prog("checking update information");
 		UpdateJson json = Data.silent(UpdateCheck::checkUpdate);
-		List<Downloader> assets = null, musics, libs = null, lang;
+		List<Downloader> assets = null, musics = null, libs = null, lang;
 		UpdateJson.JarJson[] jars = null;
 		try {
 			jars = getLatestJars(json);
@@ -38,15 +38,18 @@ public class BCJSON {
 			CommonStatic.def.save(false, true);
 		}
 
-		int count = json != null ? json.music : Data.SE_ALL[Data.SE_ALL.length - 1] + 1;
-		if (CommonStatic.getConfig().updateOldMusic) {
-			try {
-				musics = UpdateCheck.checkMusic(count).get();
-			} catch (Exception ignored) {
-				musics = new ArrayList<>();
-			}
-		} else
-			musics = UpdateCheck.checkNewMusic(count);
+		if (json != null) {
+			int count = json.music;
+			if (CommonStatic.getConfig().updateOldMusic) {
+				try {
+					musics = UpdateCheck.checkMusic(count).get();
+				} catch (Exception ignored) {
+					musics = new ArrayList<>();
+				}
+			} else
+				musics = UpdateCheck.checkNewMusic(count);
+		}
+
 		ArrayList<String> langList = new ArrayList<>();
 		for (String pcLangCode : PC_LANG_CODES) {
 			for (String pcLangFile : PC_LANG_FILES)
