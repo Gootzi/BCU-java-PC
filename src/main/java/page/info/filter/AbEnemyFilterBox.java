@@ -182,6 +182,11 @@ class AEFBButton extends AbEnemyFilterBox {
     @Override
     protected List<AbEnemy> filterType() {
         for(PackData p : UserProfile.getAllPacks()) {
+            for (EneRand er : p.randEnemies) {
+                boolean editable = pack == null || er.id.pack.equals(Identifier.DEF) || er.id.pack.equals(pack) || parents.contains(er.id.pack);
+                if (editable)
+                    enem.add(er);
+            }
             for (Enemy e : p.enemies.getList()) {
                 List<Trait> ct = e.de.getTraits();
                 int a = e.de.getAbi();
